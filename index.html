@@ -5,7 +5,7 @@
    Change false to true  = site goes offline
    Change true to false  = site comes back
    ======================================== */
-const MAINTENANCE = true;
+const MAINTENANCE = false;
 </script>
 <html lang="en">
 <head>
@@ -152,11 +152,11 @@ section+section{padding-top:0}
   box-shadow:0 0 0 1px rgba(168,85,247,.1),0 12px 36px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08)}
 .avatar::after{content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 55%)}
-.status-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(16,185,129,.1);
-  border:1px solid rgba(16,185,129,.22);border-radius:100px;padding:.3em .9em;
-  font-size:.7rem;font-weight:600;color:#6ee7b7;letter-spacing:.04em}
-.status-dot{width:6px;height:6px;border-radius:50%;background:#10b981;
-  box-shadow:0 0 8px #10b981;animation:pulse-dot 2s ease infinite}
+.status-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(248,113,113,.1);
+  border:1px solid rgba(248,113,113,.22);border-radius:100px;padding:.3em .9em;
+  font-size:.7rem;font-weight:600;color:#fca5a5;letter-spacing:.04em}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#f87171;
+  box-shadow:0 0 8px #f87171;animation:pulse-dot 2s ease infinite}
 .about-bio{font-size:clamp(.9rem,2vw,.97rem);line-height:1.85;color:var(--text);margin-bottom:.9rem}
 .about-bio strong{color:var(--white)}
 .stats-row{display:flex;gap:.75rem;flex-wrap:wrap;margin:1.4rem 0 1.6rem}
@@ -613,8 +613,8 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
   <div class="divider reveal"></div>
   <div class="about-wrap">
     <div class="avatar-block reveal">
-      <div class="avatar">TZ</div>
-      <div class="status-badge"><span class="status-dot"></span>Online</div>
+      <div class="avatar"><img src="https://image2url.com/r2/default/images/1772748006841-e926007b-efd3-4050-b3e0-e370939b45da.png" alt="Tazz" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"/></div>
+      <div class="status-badge"><span class="status-dot dnd"></span>Do Not Disturb</div>
     </div>
     <div class="reveal" style="transition-delay:.1s">
       <p class="about-bio">Hey — I'm <strong>Tazz</strong>, a competitive gamer and content creator driven by one goal: to be the best. I live for high-stakes matches, clutch moments, and building a community of people who share the same fire.</p>
