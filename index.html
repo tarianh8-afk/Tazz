@@ -428,12 +428,90 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
 /* UTILS */
 .reveal{opacity:1;transform:translateY(0);transition:opacity .6s ease,transform .6s ease}
 .reveal.hidden{opacity:0;transform:translateY(20px)}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--purple-dark);border-radius:2px}
+/* ── MAINTENANCE OVERLAY ── */
+#maint-overlay{
+  display:none;
+  position:fixed;inset:0;z-index:99999;
+  background:#07040f;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;
+}
+#maint-overlay.show{display:flex}
+
+.maint-status{
+  display:inline-flex;align-items:center;gap:.55rem;
+  font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.18em;
+  color:#f87171;margin-bottom:2.5rem;
+}
+.maint-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:#f87171;
+  box-shadow:0 0 0 0 rgba(248,113,113,.5);
+  animation:maint-pulse 1.8s ease infinite;
+}
+@keyframes maint-pulse{
+  0%{box-shadow:0 0 0 0 rgba(248,113,113,.55)}
+  70%{box-shadow:0 0 0 12px rgba(248,113,113,0)}
+  100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}
+}
+
+.maint-logo{
+  font-family:'Space Mono',monospace;font-size:clamp(2.5rem,10vw,5rem);
+  font-weight:700;letter-spacing:.1em;
+  background:linear-gradient(135deg,#fff 0%,#e9d5ff 45%,#c084fc 70%,#e879f9 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(168,85,247,.5));
+  margin-bottom:2rem;
+}
+
+.maint-gear{
+  font-size:clamp(2.5rem,8vw,4rem);
+  display:block;margin-bottom:2rem;
+  animation:maint-spin 3s linear infinite;
+  filter:drop-shadow(0 0 12px rgba(168,85,247,.6));
+}
+@keyframes maint-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.maint-title{
+  font-size:clamp(1rem,4vw,1.4rem);font-weight:400;
+  color:var(--muted);letter-spacing:.06em;
+  margin-bottom:.5rem;
+}
+.maint-big{
+  font-size:clamp(2rem,8vw,3.8rem);font-weight:900;
+  color:var(--white);letter-spacing:.04em;line-height:1;
+  margin-bottom:2.2rem;
+  text-shadow:0 0 40px rgba(168,85,247,.3);
+}
+.maint-soon{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(.75rem,2vw,.88rem);letter-spacing:.2em;
+  color:var(--purple-light);
+  animation:maint-fade 2.5s ease infinite;
+}
+@keyframes maint-fade{0%,100%{opacity:.4}50%{opacity:1}}
+
+.maint-grid{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(168,85,247,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(168,85,247,.04) 1px,transparent 1px);
+  background-size:64px 64px;
+}
 </style>
 </head>
 <body>
+
+<!-- MAINTENANCE OVERLAY -->
+<div id="maint-overlay">
+  <div class="maint-grid"></div>
+  <div class="maint-status"><span class="maint-dot"></span>WEBSITE OFFLINE</div>
+  <div class="maint-logo">TAZZ</div>
+  <span class="maint-gear">&#9881;</span>
+  <div class="maint-title">Website is in</div>
+  <div class="maint-big">MAINTENANCE</div>
+  <div class="maint-soon">— COME BACK SOON —</div>
+</div>
 
 <canvas id="particles"></canvas>
 <div id="cur-dot"></div>
@@ -560,8 +638,8 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
     <a href="#" class="social-card reveal" style="transition-delay:.12s">
       <div class="s-icon">&#128250;</div><div><div class="s-name">Twitch</div><div class="s-handle">Coming soon</div></div>
     </a>
-    <a href="mailto:Tarianh8@outlook.com" class="social-card reveal" style="transition-delay:.18s">
-      <div class="s-icon">&#128231;</div><div><div class="s-name">Email</div><div class="s-handle">Tarianh8@outlook.com</div></div>
+    <a href="/cdn-cgi/l/email-protection#a4f0c5d6cdc5cacc9ce4cbd1d0c8cbcbcf8ac7cbc9" class="social-card reveal" style="transition-delay:.18s">
+      <div class="s-icon">&#128231;</div><div><div class="s-name">Email</div><div class="s-handle"><span class="__cf_email__" data-cfemail="d783b6a5beb6b9bfef97b8a2a3bbb8b8bcf9b4b8ba">[email&#160;protected]</span></div></div>
     </a>
     <a href="https://discord.com/users/devtazz" target="_blank" rel="noopener" class="social-card reveal" style="transition-delay:.24s">
       <div class="s-icon">&#128172;</div><div><div class="s-name">Discord</div><div class="s-handle">devtazz</div></div>
@@ -690,7 +768,7 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
     <div class="reveal">
       <div class="contact-info-title">Get in touch</div>
       <p class="contact-info-text">Business inquiries, sponsorships, collabs, or just want to talk gaming? I read everything — drop a message.</p>
-      <a href="mailto:Tarianh8@outlook.com" class="contact-link"><div class="c-link-icon">&#128231;</div>Tarianh8@outlook.com</a>
+      <a href="/cdn-cgi/l/email-protection#2c784d5e454d4244146c43595840434347024f4341" class="contact-link"><div class="c-link-icon">&#128231;</div><span class="__cf_email__" data-cfemail="90c4f1e2f9f1fef8a8d0ffe5e4fcfffffbbef3fffd">[email&#160;protected]</span></a>
       <a href="https://discord.com/users/devtazz" target="_blank" rel="noopener" class="contact-link"><div class="c-link-icon">&#128172;</div>Discord: devtazz</a>
       <a href="https://www.tiktok.com/@nsg_tazz" target="_blank" rel="noopener" class="contact-link"><div class="c-link-icon">&#127925;</div>TikTok: @nsg_tazz</a>
     </div>
@@ -720,7 +798,19 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ===== MAINTENANCE MODE =====
+   Set to true to show maintenance screen, false to show site normally */
+const MAINTENANCE = false;
+(function(){
+  if(MAINTENANCE){
+    document.getElementById('maint-overlay').classList.add('show');
+    document.body.style.overflow='hidden';
+    // Hide everything else
+    document.querySelectorAll('body > *:not(#maint-overlay)').forEach(el=>el.style.display='none');
+  }
+})();
+
 /* ===== PARTICLES + GRID ===== */
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
