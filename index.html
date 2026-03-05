@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<script>
+/* ========================================
+   🔧 MAINTENANCE MODE
+   Change false to true  = site goes offline
+   Change true to false  = site comes back
+   ======================================== */
+const MAINTENANCE = false;
+</script>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -19,14 +27,14 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 #particles{position:fixed;inset:0;z-index:0;pointer-events:none}
 #cur-dot,#cur-ring,#cur-trail-canvas-wrap{display:none}
 @media(hover:hover) and (pointer:fine){
-  #cur-trail-canvas-wrap{display:block;position:fixed;inset:0;pointer-events:none;z-index:9995}
+  #cur-trail-canvas-wrap{display:block;position:fixed;inset:0;pointer-events:none;z-index:999995}
   #cur-trail{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
   #cur-dot{display:block;position:fixed;width:8px;height:8px;background:#fff;border-radius:50%;
-    pointer-events:none;z-index:9999;transform:translate(-50%,-50%);
+    pointer-events:none;z-index:999999;transform:translate(-50%,-50%);
     box-shadow:0 0 8px 2px var(--purple-light),0 0 20px var(--purple);
     transition:width .15s,height .15s,background .2s,box-shadow .2s}
   #cur-ring{display:block;position:fixed;width:36px;height:36px;border-radius:50%;
-    pointer-events:none;z-index:9998;transform:translate(-50%,-50%);
+    pointer-events:none;z-index:999998;transform:translate(-50%,-50%);
     border:1.5px solid rgba(192,132,252,.7);
     box-shadow:0 0 12px rgba(168,85,247,.3),inset 0 0 12px rgba(168,85,247,.08);
     transition:width .25s cubic-bezier(.23,1,.32,1),height .25s cubic-bezier(.23,1,.32,1),
@@ -838,18 +846,13 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ========================================
-   🔧 MAINTENANCE MODE
-   Change false to true  = site goes offline
-   Change true to false  = site comes back
-   ======================================== */
-const MAINTENANCE = false;
+/* MAINTENANCE moved to top */
 if(MAINTENANCE){
   document.addEventListener('DOMContentLoaded', function(){
     const overlay = document.getElementById('maint-overlay');
     overlay.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    document.querySelectorAll('body > *:not(#maint-overlay)').forEach(function(el){
+    document.querySelectorAll('body > *:not(#maint-overlay):not(#cur-dot):not(#cur-ring):not(#cur-trail-canvas-wrap)').forEach(function(el){
       el.style.display = 'none';
     });
     overlay.style.display = 'flex';
