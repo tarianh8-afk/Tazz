@@ -996,10 +996,10 @@ class Particle{
   reset(randomY){
     this.x=Math.random()*W;
     this.y=randomY?Math.random()*H:H+10;
-    this.vx=(Math.random()-.5)*.3;
-    this.vy=-(Math.random()*.6+.35);
+    this.vx=(Math.random()-.5)*.15;
+    this.vy=-(Math.random()*.2+.15);
     this.size=Math.random()*1.5+.3;
-    this.life=0;this.maxLife=Math.random()*300+400;
+    this.life=0;this.maxLife=Math.random()*200+600;
     this.wave=Math.random()*Math.PI*2;
     this.twinkle=Math.random()*Math.PI*2;
     const c=COLORS[Math.floor(Math.random()*COLORS.length)];
@@ -1014,7 +1014,7 @@ class Particle{
       const dist=Math.sqrt(dx*dx+dy*dy);
       if(dist<85){const f=(85-dist)/85;this.x+=(dx/dist)*f*1.1;this.y+=(dy/dist)*f*1.1}
     }
-    if(this.life>this.maxLife||this.y<-20)this.reset(false);
+    if(this.y<-20)this.reset(false);
   }
   draw(){
     const p=this.life/this.maxLife;
@@ -1031,25 +1031,45 @@ class Particle{
 }
 
 function drawLines(){
-  if(isMobile)return;
-  const near=particles.filter(p=>{
-    const dx=p.x-mouse.x,dy=p.y-mouse.y;
-    return Math.sqrt(dx*dx+dy*dy)<140;
-  });
-  for(let i=0;i<near.length;i++){
-    for(let j=i+1;j<near.length;j++){
-      const dx=near[i].x-near[j].x,dy=near[i].y-near[j].y;
+  // Spider web — every particle connects to every nearby particle
+  const WEB_DIST = isMobile ? 100 : 140;
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x;
+      const dy=particles[i].y-particles[j].y;
       const d=Math.sqrt(dx*dx+dy*dy);
-      if(d<85){
-        ctx.beginPath();ctx.moveTo(near[i].x,near[i].y);ctx.lineTo(near[j].x,near[j].y);
-        ctx.strokeStyle=`rgba(168,85,247,${(1-d/85)*.22})`;ctx.lineWidth=.6;ctx.stroke();
+      if(d<WEB_DIST){
+        const alpha=(1-d/WEB_DIST)*0.18;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(168,85,247,${alpha})`;
+        ctx.lineWidth=0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  // Extra bright lines near mouse
+  if(!isMobile){
+    const near=particles.filter(p=>{
+      const dx=p.x-mouse.x,dy=p.y-mouse.y;
+      return Math.sqrt(dx*dx+dy*dy)<160;
+    });
+    for(let i=0;i<near.length;i++){
+      for(let j=i+1;j<near.length;j++){
+        const dx=near[i].x-near[j].x,dy=near[i].y-near[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<100){
+          ctx.beginPath();ctx.moveTo(near[i].x,near[i].y);ctx.lineTo(near[j].x,near[j].y);
+          ctx.strokeStyle=`rgba(232,121,249,${(1-d/100)*.35})`;ctx.lineWidth=.8;ctx.stroke();
+        }
       }
     }
   }
 }
 
 function initParticles(){
-  const count=isMobile?60:Math.min(Math.floor((W*H)/7000),150);
+  const count=isMobile?70:Math.min(Math.floor((W*H)/5500),180);
   particles=Array.from({length:count},()=>new Particle(true));
 }
 
