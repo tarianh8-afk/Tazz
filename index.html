@@ -430,87 +430,126 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
 .reveal.hidden{opacity:0;transform:translateY(20px)}
 /* ── MAINTENANCE OVERLAY ── */
 #maint-overlay{
-  display:none;
-  position:fixed;inset:0;z-index:99999;
+  display:none;position:fixed;inset:0;z-index:99999;
   background:#07040f;
   flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:2rem;
+  text-align:center;padding:2rem;overflow:hidden;
 }
-#maint-overlay.show{display:flex}
-
+#maint-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+#maint-overlay::before{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 30%,rgba(7,4,15,.85) 100%);
+}
+.maint-inner{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;
+  animation:maint-enter .9s cubic-bezier(.23,1,.32,1) both;
+}
+@keyframes maint-enter{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
 .maint-status{
-  display:inline-flex;align-items:center;gap:.55rem;
-  font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.18em;
-  color:#f87171;margin-bottom:2.5rem;
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.2em;
+  color:#f87171;background:rgba(248,113,113,.08);
+  border:1px solid rgba(248,113,113,.25);border-radius:100px;
+  padding:.45em 1.2em;margin-bottom:2.8rem;
 }
 .maint-dot{
-  width:9px;height:9px;border-radius:50%;
-  background:#f87171;
+  width:8px;height:8px;border-radius:50%;background:#f87171;
   box-shadow:0 0 0 0 rgba(248,113,113,.5);
   animation:maint-pulse 1.8s ease infinite;
 }
 @keyframes maint-pulse{
-  0%{box-shadow:0 0 0 0 rgba(248,113,113,.55)}
-  70%{box-shadow:0 0 0 12px rgba(248,113,113,0)}
+  0%{box-shadow:0 0 0 0 rgba(248,113,113,.6)}
+  70%{box-shadow:0 0 0 10px rgba(248,113,113,0)}
   100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}
 }
-
 .maint-logo{
-  font-family:'Space Mono',monospace;font-size:clamp(2.5rem,10vw,5rem);
-  font-weight:700;letter-spacing:.1em;
-  background:linear-gradient(135deg,#fff 0%,#e9d5ff 45%,#c084fc 70%,#e879f9 100%);
+  font-family:'Space Mono',monospace;
+  font-size:clamp(3rem,12vw,6.5rem);font-weight:700;
+  letter-spacing:.08em;line-height:1;
+  background:linear-gradient(135deg,#fff 0%,#e9d5ff 40%,#c084fc 65%,#e879f9 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 30px rgba(168,85,247,.5));
-  margin-bottom:2rem;
+  filter:drop-shadow(0 0 50px rgba(168,85,247,.45));
+  margin-bottom:2.5rem;
 }
-
-.maint-gear{
-  font-size:clamp(2.5rem,8vw,4rem);
-  display:block;margin-bottom:2rem;
-  animation:maint-spin 3s linear infinite;
-  filter:drop-shadow(0 0 12px rgba(168,85,247,.6));
+.maint-gears{position:relative;width:90px;height:90px;margin-bottom:2.5rem}
+.maint-gear-big{
+  position:absolute;top:0;left:0;font-size:3.4rem;line-height:1;
+  animation:spin-cw 4s linear infinite;
+  filter:drop-shadow(0 0 14px rgba(168,85,247,.7));
 }
-@keyframes maint-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
-.maint-title{
-  font-size:clamp(1rem,4vw,1.4rem);font-weight:400;
-  color:var(--muted);letter-spacing:.06em;
-  margin-bottom:.5rem;
+.maint-gear-sm{
+  position:absolute;bottom:-2px;right:-16px;font-size:1.9rem;line-height:1;
+  animation:spin-ccw 2.8s linear infinite;
+  filter:drop-shadow(0 0 8px rgba(232,121,249,.6));
+}
+@keyframes spin-cw{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes spin-ccw{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+.maint-card{
+  background:rgba(255,255,255,.03);
+  border:1.5px solid rgba(168,85,247,.2);border-radius:24px;
+  padding:clamp(1.4rem,4vw,2.2rem) clamp(2rem,6vw,4rem);
+  margin-bottom:2.5rem;position:relative;overflow:hidden;
+  box-shadow:0 0 60px rgba(168,85,247,.08),inset 0 1px 0 rgba(255,255,255,.05);
+}
+.maint-card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(135deg,rgba(168,85,247,.07) 0%,transparent 60%);
+}
+.maint-label{
+  font-family:'Space Mono',monospace;font-size:clamp(.65rem,1.8vw,.75rem);
+  letter-spacing:.22em;color:var(--muted);margin-bottom:.6rem;
 }
 .maint-big{
-  font-size:clamp(2rem,8vw,3.8rem);font-weight:900;
-  color:var(--white);letter-spacing:.04em;line-height:1;
-  margin-bottom:2.2rem;
-  text-shadow:0 0 40px rgba(168,85,247,.3);
+  font-size:clamp(2.2rem,8vw,4.5rem);font-weight:900;
+  letter-spacing:.06em;line-height:1;
+  background:linear-gradient(135deg,#fff,#c084fc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(168,85,247,.3));
 }
+.maint-progress-wrap{width:clamp(200px,60vw,360px);margin-bottom:2.5rem}
+.maint-progress-label{
+  font-family:'Space Mono',monospace;font-size:.62rem;color:var(--muted);
+  letter-spacing:.12em;display:flex;justify-content:space-between;margin-bottom:.5rem;
+}
+.maint-bar{width:100%;height:3px;background:rgba(168,85,247,.12);border-radius:2px;overflow:hidden}
+.maint-bar-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+  border-radius:2px;box-shadow:0 0 10px rgba(168,85,247,.5);
+  animation:bar-load 3.5s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes bar-load{0%{width:0%}40%{width:35%}70%{width:62%}85%{width:78%}100%{width:85%}}
 .maint-soon{
   font-family:'Space Mono',monospace;
-  font-size:clamp(.75rem,2vw,.88rem);letter-spacing:.2em;
-  color:var(--purple-light);
-  animation:maint-fade 2.5s ease infinite;
+  font-size:clamp(.72rem,2vw,.82rem);letter-spacing:.18em;color:var(--purple-light);
+  animation:maint-breathe 2.8s ease infinite;
 }
-@keyframes maint-fade{0%,100%{opacity:.4}50%{opacity:1}}
-
-.maint-grid{
-  position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(168,85,247,.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(168,85,247,.04) 1px,transparent 1px);
-  background-size:64px 64px;
-}
+@keyframes maint-breathe{0%,100%{opacity:.3}50%{opacity:1}}
 </style>
 </head>
 <body>
 
 <!-- MAINTENANCE OVERLAY -->
 <div id="maint-overlay">
-  <div class="maint-grid"></div>
-  <div class="maint-status"><span class="maint-dot"></span>WEBSITE OFFLINE</div>
-  <div class="maint-logo">TAZZ</div>
-  <span class="maint-gear">&#9881;</span>
-  <div class="maint-title">Website is in</div>
-  <div class="maint-big">MAINTENANCE</div>
-  <div class="maint-soon">— COME BACK SOON —</div>
+  <canvas id="maint-canvas"></canvas>
+  <div class="maint-inner">
+    <div class="maint-status"><span class="maint-dot"></span>WEBSITE OFFLINE</div>
+    <div class="maint-logo">TAZZ</div>
+    <div class="maint-gears">
+      <span class="maint-gear-big">&#9881;</span>
+      <span class="maint-gear-sm">&#9881;</span>
+    </div>
+    <div class="maint-card">
+      <div class="maint-label">WEBSITE IS CURRENTLY IN</div>
+      <div class="maint-big">MAINTENANCE</div>
+    </div>
+    <div class="maint-progress-wrap">
+      <div class="maint-progress-label"><span>WORKING ON IT</span><span id="maint-pct">0%</span></div>
+      <div class="maint-bar"><div class="maint-bar-fill" id="maint-fill"></div></div>
+    </div>
+    <div class="maint-soon">&#8212;&nbsp; COME BACK SOON &nbsp;&#8212;</div>
+  </div>
 </div>
 
 <canvas id="particles"></canvas>
@@ -799,17 +838,104 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ===== MAINTENANCE MODE =====
-   Set to true to show maintenance screen, false to show site normally */
-const MAINTENANCE = False;
-(function(){
-  if(MAINTENANCE){
-    document.getElementById('maint-overlay').classList.add('show');
-    document.body.style.overflow='hidden';
-    // Hide everything else
-    document.querySelectorAll('body > *:not(#maint-overlay)').forEach(el=>el.style.display='none');
-  }
-})();
+/* ========================================
+   🔧 MAINTENANCE MODE
+   Change false to true  = site goes offline
+   Change true to false  = site comes back
+   ======================================== */
+const MAINTENANCE = true;
+if(MAINTENANCE){
+  document.addEventListener('DOMContentLoaded', function(){
+    const overlay = document.getElementById('maint-overlay');
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    document.querySelectorAll('body > *:not(#maint-overlay)').forEach(function(el){
+      el.style.display = 'none';
+    });
+    overlay.style.display = 'flex';
+
+    // Animated progress counter
+    const pct = document.getElementById('maint-pct');
+    const targets = [35, 62, 78, 85];
+    let ti = 0, cur = 0;
+    const delays = [800, 600, 500, 800];
+    function tick(){
+      if(ti >= targets.length) return;
+      const target = targets[ti];
+      const step = () => {
+        if(cur < target){ cur++; if(pct) pct.textContent = cur+'%'; requestAnimationFrame(step); }
+        else { ti++; setTimeout(tick, delays[ti] || 800); }
+      };
+      setTimeout(step, delays[ti]);
+      ti++;
+    }
+    setTimeout(tick, 400);
+
+    // Maintenance background particles
+    const mc = document.getElementById('maint-canvas');
+    if(mc){
+      const mctx = mc.getContext('2d');
+      let MW, MH, mparts = [];
+      function mResize(){ MW = mc.width = window.innerWidth; MH = mc.height = window.innerHeight; }
+      mResize();
+      window.addEventListener('resize', mResize);
+      const MCOLS = [[168,85,247],[192,132,252],[232,121,249],[255,255,255]];
+      for(let i=0;i<80;i++){
+        const c = MCOLS[Math.floor(Math.random()*MCOLS.length)];
+        mparts.push({
+          x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight,
+          vx:(Math.random()-.5)*.25, vy:-(Math.random()*.4+.2),
+          size:Math.random()*1.2+.3, life:Math.random()*400,
+          maxLife:Math.random()*300+300, wave:Math.random()*Math.PI*2,
+          r:c[0],g:c[1],b:c[2]
+        });
+      }
+      // Animated grid offset
+      let mgrid = 0;
+      function mDrawGrid(){
+        const gs = 64, cols = Math.ceil(MW/gs)+2, rows = Math.ceil(MH/gs)+2;
+        const ox = mgrid % gs;
+        mctx.save();
+        for(let c=-1;c<cols;c++){
+          const x=c*gs-ox;
+          mctx.beginPath();mctx.moveTo(x,0);mctx.lineTo(x,MH);
+          mctx.strokeStyle='rgba(168,85,247,.045)';mctx.lineWidth=.5;mctx.stroke();
+        }
+        for(let r=-1;r<rows;r++){
+          const y=r*gs-ox;
+          mctx.beginPath();mctx.moveTo(0,y);mctx.lineTo(MW,y);
+          mctx.strokeStyle='rgba(168,85,247,.045)';mctx.lineWidth=.5;mctx.stroke();
+        }
+        mctx.restore();
+      }
+      function mAnimate(){
+        mctx.clearRect(0,0,MW,MH);
+        mgrid += 0.25;
+        mDrawGrid();
+        mparts.forEach(p=>{
+          p.life++; p.wave+=.018;
+          p.x += p.vx + Math.sin(p.wave)*.12;
+          p.y += p.vy;
+          if(p.life > p.maxLife || p.y < -10){
+            p.x=Math.random()*MW; p.y=MH+5; p.life=0;
+          }
+          const prog = p.life/p.maxLife;
+          const fade = prog<.1?prog/.1:prog>.9?(1-prog)/.1:1;
+          const alpha = fade * .5;
+          const g = mctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*4);
+          g.addColorStop(0,`rgba(${p.r},${p.g},${p.b},${alpha*.5})`);
+          g.addColorStop(1,`rgba(${p.r},${p.g},${p.b},0)`);
+          mctx.beginPath();mctx.arc(p.x,p.y,p.size*4,0,Math.PI*2);
+          mctx.fillStyle=g;mctx.fill();
+          mctx.beginPath();mctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+          mctx.fillStyle=`rgba(${p.r},${p.g},${p.b},${alpha*1.2})`;mctx.fill();
+        });
+        requestAnimationFrame(mAnimate);
+      }
+      mAnimate();
+    }
+  });
+}
 
 /* ===== PARTICLES + GRID ===== */
 const canvas = document.getElementById('particles');
