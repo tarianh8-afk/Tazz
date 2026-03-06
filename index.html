@@ -5,7 +5,7 @@
    Change false → true  = site goes offline
    Change true  → false = site comes back
    ======================================== */
-const MAINTENANCE = true;
+const MAINTENANCE = false;
 
 /* ========================================
    🚫 404 MODE
@@ -453,6 +453,26 @@ footer{
 #back-top:hover{background:rgba(168,85,247,.25);box-shadow:0 0 24px rgba(168,85,247,.3);transform:translateY(-3px)}
 #back-top:active{transform:scale(.92)}
 
+/* MUSIC BTN */
+#music-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(168,85,247,.12);
+  border:1.5px solid rgba(168,85,247,.3);
+  font-size:1rem;cursor:pointer;
+  transition:all .25s ease;
+  box-shadow:0 0 14px rgba(168,85,247,.1);
+  -webkit-tap-highlight-color:transparent;flex-shrink:0;
+}
+#music-btn:hover{background:rgba(168,85,247,.22);box-shadow:0 0 22px rgba(168,85,247,.28)}
+#music-btn:active{transform:scale(.92)}
+#music-btn.playing{
+  border-color:rgba(232,121,249,.5);
+  box-shadow:0 0 18px rgba(232,121,249,.25);
+  animation:music-pulse 2s ease infinite;
+}
+@keyframes music-pulse{0%,100%{box-shadow:0 0 18px rgba(232,121,249,.25)}50%{box-shadow:0 0 28px rgba(232,121,249,.45)}}
+
 /* THEME BTN - in nav */
 #theme-btn{
   display:flex;align-items:center;gap:.45rem;
@@ -709,145 +729,199 @@ body.theme-green{
 /* ── MAINTENANCE OVERLAY ── */
 #maint-overlay{
   display:none;position:fixed;inset:0;z-index:99999;
-  background:#06030e;
+  background:#05020c;
   flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:2rem;overflow:hidden;
 }
 #maint-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* Central radial glow */
 #maint-overlay::before{
-  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 30%,rgba(6,3,14,.85) 100%);
+  content:'';position:fixed;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(168,85,247,.12) 0%,rgba(232,121,249,.05) 40%,transparent 70%);
+  pointer-events:none;z-index:1;
+  animation:maint-glow-pulse 4s ease infinite;
 }
+#maint-overlay::after{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 100% 100% at 50% 50%,transparent 35%,rgba(5,2,12,.95) 100%);
+}
+@keyframes maint-glow-pulse{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
+
 .maint-inner{
   position:relative;z-index:2;
   display:flex;flex-direction:column;align-items:center;
-  animation:maint-enter .9s cubic-bezier(.23,1,.32,1) both;
-  max-width:600px;width:100%;
+  animation:maint-enter 1s cubic-bezier(.23,1,.32,1) both;
+  max-width:560px;width:100%;gap:0;
 }
-@keyframes maint-enter{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes maint-enter{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
 
-/* Big gear top */
+/* Gear */
 .maint-gear-wrap{
-  margin-bottom:1.5rem;
-  filter:drop-shadow(0 0 24px rgba(168,85,247,.55));
+  margin-bottom:1.8rem;
+  position:relative;
+}
+.maint-gear-wrap::before{
+  content:'';position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle,rgba(168,85,247,.25),transparent 70%);
+  animation:maint-glow-pulse 3s ease infinite;
 }
 .maint-gear-big{
-  font-size:4rem;line-height:1;
-  animation:spin-cw 5s linear infinite;display:block;
+  font-size:3.5rem;line-height:1;display:block;
+  animation:spin-cw 6s linear infinite;
+  filter:drop-shadow(0 0 18px rgba(168,85,247,.8)) drop-shadow(0 0 6px rgba(232,121,249,.5));
 }
 @keyframes spin-cw{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
 /* TAZZ logo */
 .maint-logo{
   font-family:'Space Mono',monospace;
-  font-size:clamp(1rem,3vw,1.2rem);font-weight:700;
-  letter-spacing:.12em;line-height:1;
-  background:linear-gradient(135deg,#fff 0%,#e9d5ff 40%,#c084fc 65%,#e879f9 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 16px rgba(168,85,247,.45));
-  margin-bottom:1.2rem;
+  font-size:clamp(.85rem,2.5vw,1rem);font-weight:700;
+  letter-spacing:.25em;
+  color:rgba(255,255,255,.45);
+  margin-bottom:1.4rem;
+  text-transform:uppercase;
 }
 
 /* MAINTENANCE big text */
 .maint-big{
-  font-size:clamp(2.8rem,12vw,6.5rem);font-weight:900;
-  letter-spacing:.06em;line-height:1;margin-bottom:.5rem;
-  background:linear-gradient(90deg,#e879f9 0%,#c084fc 40%,#e879f9 100%);
-  background-size:200% 100%;
+  font-size:clamp(2.6rem,11vw,6rem);font-weight:900;
+  letter-spacing:.08em;line-height:1;margin-bottom:0;
+  background:linear-gradient(135deg,#fff 0%,#f0d9ff 30%,#c084fc 55%,#e879f9 80%,#c084fc 100%);
+  background-size:200% 200%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 40px rgba(232,121,249,.4));
-  animation:maint-shimmer 3s linear infinite;
+  filter:drop-shadow(0 0 50px rgba(192,132,252,.35));
+  animation:maint-shimmer 4s linear infinite;
 }
-@keyframes maint-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes maint-shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-/* Underline accent */
+/* Glowing underline */
 .maint-divider{
-  width:clamp(120px,40vw,280px);height:2px;
-  background:linear-gradient(90deg,transparent,rgba(232,121,249,.6),transparent);
-  margin:0 auto 2rem;
+  width:clamp(100px,35vw,240px);height:1.5px;
+  background:linear-gradient(90deg,transparent,rgba(232,121,249,.8),rgba(168,85,247,.6),transparent);
+  margin:1rem auto 2rem;
+  position:relative;
+}
+.maint-divider::after{
+  content:'';position:absolute;inset:0;
+  background:inherit;filter:blur(4px);opacity:.7;
 }
 
 /* WE'LL BE RIGHT BACK */
 .maint-headline{
   font-family:'Space Mono',monospace;
-  font-size:clamp(.75rem,2.5vw,.92rem);letter-spacing:.22em;font-weight:700;
-  color:var(--white);margin-bottom:.8rem;
-  display:flex;align-items:center;gap:.5rem;justify-content:center;
+  font-size:clamp(.7rem,2.2vw,.85rem);letter-spacing:.28em;font-weight:700;
+  color:rgba(255,255,255,.9);margin-bottom:1rem;
+  display:flex;align-items:center;gap:.6rem;justify-content:center;
+  text-shadow:0 0 20px rgba(232,121,249,.3);
 }
-.maint-exclaim{color:#e879f9;font-size:1.1em}
+.maint-exclaim{
+  color:#e879f9;font-size:1.2em;
+  text-shadow:0 0 12px rgba(232,121,249,.8);
+}
 
 /* Sub text */
 .maint-sub{
-  font-size:clamp(.8rem,2vw,.9rem);color:#c4b5d4;font-weight:600;
-  line-height:1.7;margin-bottom:.3rem;
+  font-size:clamp(.82rem,2vw,.9rem);
+  color:rgba(200,180,220,.75);font-weight:500;
+  line-height:1.6;margin-bottom:.25rem;
+  font-style:italic;
 }
 .maint-sub2{
-  font-size:clamp(.8rem,2vw,.9rem);color:#c4b5d4;font-weight:600;
-  line-height:1.7;margin-bottom:2rem;
+  font-size:clamp(.82rem,2vw,.9rem);
+  color:rgba(200,180,220,.6);font-weight:500;
+  line-height:1.6;margin-bottom:2.2rem;
 }
 
-/* Progress */
-.maint-progress-wrap{width:clamp(240px,70vw,420px);margin-bottom:2rem}
-.maint-progress-label{
-  font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;
-  letter-spacing:.12em;display:flex;justify-content:space-between;margin-bottom:.6rem;
-}
-.maint-progress-label span:first-child{color:var(--purple-light)}
-#maint-pct{color:var(--white)}
-.maint-bar{
-  width:100%;height:6px;
-  background:rgba(168,85,247,.15);border-radius:3px;overflow:hidden;
-  position:relative;
+/* Progress card */
+.maint-progress-card{
+  width:clamp(260px,72vw,440px);
+  background:rgba(255,255,255,.03);
   border:1px solid rgba(168,85,247,.2);
+  border-radius:16px;
+  padding:1.2rem 1.6rem;
+  margin-bottom:2rem;
+  box-shadow:0 0 40px rgba(168,85,247,.06),inset 0 1px 0 rgba(255,255,255,.04);
+  position:relative;overflow:hidden;
+}
+.maint-progress-card::before{
+  content:'';position:absolute;inset:0;border-radius:16px;
+  background:linear-gradient(135deg,rgba(168,85,247,.06),transparent 60%);
+  pointer-events:none;
+}
+.maint-progress-label{
+  font-family:'Space Mono',monospace;font-size:.6rem;font-weight:700;
+  letter-spacing:.14em;display:flex;justify-content:space-between;
+  margin-bottom:.8rem;
+}
+.maint-progress-label span:first-child{color:#c084fc}
+#maint-pct{
+  color:#fff;
+  text-shadow:0 0 10px rgba(232,121,249,.6);
+}
+.maint-bar{
+  width:100%;height:5px;
+  background:rgba(168,85,247,.1);
+  border-radius:100px;overflow:hidden;
+  position:relative;
 }
 .maint-bar-fill{
   height:100%;width:0%;
-  background:linear-gradient(90deg,#a855f7,#e879f9);
-  border-radius:3px;
-  box-shadow:0 0 14px rgba(232,121,249,.7),0 0 4px rgba(232,121,249,.9);
-  transition:width .5s ease;
+  background:linear-gradient(90deg,#7c3aed,#a855f7,#e879f9);
+  border-radius:100px;
+  box-shadow:0 0 16px rgba(232,121,249,.8),0 0 6px rgba(168,85,247,1);
+  transition:width .4s ease;
   position:relative;z-index:1;
 }
-/* Dotted progress overlay */
+/* Animated shimmer on bar */
+.maint-bar-fill::after{
+  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+  animation:bar-shine 2s ease infinite;
+}
+@keyframes bar-shine{0%{left:-100%}100%{left:200%}}
 .maint-bar-dots{
   position:absolute;inset:0;z-index:2;
-  background:repeating-linear-gradient(90deg,transparent,transparent 8px,rgba(6,3,14,.4) 8px,rgba(6,3,14,.4) 10px);
+  background:repeating-linear-gradient(90deg,transparent,transparent 10px,rgba(5,2,12,.35) 10px,rgba(5,2,12,.35) 12px);
 }
 
-/* Buttons */
+/* TikTok button */
 .maint-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
-.maint-btn-discord{
-  display:inline-flex;align-items:center;gap:.5rem;
-  padding:.75em 1.8em;border-radius:8px;
-  background:linear-gradient(135deg,#e879f9,#a855f7);
-  color:#fff;font-family:'Space Mono',monospace;font-weight:700;
-  font-size:.75rem;letter-spacing:.1em;text-decoration:none;border:none;cursor:pointer;
-  box-shadow:0 0 24px rgba(232,121,249,.4);
-  transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;
-}
-.maint-btn-discord:hover{transform:translateY(-3px);box-shadow:0 0 36px rgba(232,121,249,.6)}
-.maint-btn-discord:active{transform:scale(.95)}
 .maint-btn-tiktok{
-  display:inline-flex;align-items:center;gap:.5rem;
-  padding:.75em 1.8em;border-radius:8px;
-  background:transparent;
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.8em 2.2em;border-radius:100px;
+  background:linear-gradient(135deg,rgba(168,85,247,.15),rgba(232,121,249,.1));
   color:#fff;font-family:'Space Mono',monospace;font-weight:700;
-  font-size:.75rem;letter-spacing:.1em;text-decoration:none;
-  border:1.5px solid rgba(255,255,255,.2);cursor:pointer;
-  transition:border-color .2s,transform .2s;-webkit-tap-highlight-color:transparent;
+  font-size:.72rem;letter-spacing:.15em;text-decoration:none;
+  border:1.5px solid rgba(232,121,249,.35);
+  box-shadow:0 0 20px rgba(168,85,247,.12),inset 0 1px 0 rgba(255,255,255,.06);
+  transition:all .25s ease;-webkit-tap-highlight-color:transparent;
 }
-.maint-btn-tiktok:hover{border-color:rgba(255,255,255,.5);transform:translateY(-3px)}
-.maint-btn-tiktok:active{transform:scale(.95)}
+.maint-btn-tiktok:hover{
+  background:linear-gradient(135deg,rgba(168,85,247,.28),rgba(232,121,249,.2));
+  border-color:rgba(232,121,249,.7);
+  box-shadow:0 0 32px rgba(232,121,249,.3);
+  transform:translateY(-2px);
+}
+.maint-btn-tiktok:active{transform:scale(.96)}
 </style>
 </head>
 <body>
+
+<audio id="bg-music" loop preload="none">
+  <source src="skyfall.mp3" type="audio/mpeg">
+</audio>
 
 <!-- MAINTENANCE OVERLAY -->
 <div id="maint-overlay">
   <canvas id="maint-canvas"></canvas>
   <div class="maint-inner">
     <div class="maint-gear-wrap"><span class="maint-gear-big">&#9881;</span></div>
-    <div class="maint-logo">TAZZ</div>
+    <div class="maint-logo">T . A Z Z</div>
     <div class="maint-big">MAINTENANCE</div>
     <div class="maint-divider"></div>
     <div class="maint-headline">
@@ -857,7 +931,7 @@ body.theme-green{
     </div>
     <p class="maint-sub">pls come back later</p>
     <p class="maint-sub2">We're working hard to improve things for you.</p>
-    <div class="maint-progress-wrap">
+    <div class="maint-progress-card">
       <div class="maint-progress-label"><span>WORKING ON IT</span><span id="maint-pct">0%</span></div>
       <div class="maint-bar">
         <div class="maint-bar-fill" id="maint-fill"></div>
@@ -865,7 +939,7 @@ body.theme-green{
       </div>
     </div>
     <div class="maint-btns">
-      <a href="https://www.tiktok.com/@nsg_tazz" target="_blank" class="maint-btn-tiktok">TIKTOK</a>
+      <a href="https://www.tiktok.com/@nsg_tazz" target="_blank" class="maint-btn-tiktok">&#127925; TIKTOK</a>
     </div>
   </div>
 </div>
@@ -887,6 +961,7 @@ body.theme-green{
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:.6rem;flex-shrink:0">
+    <button id="music-btn" aria-label="Toggle music" title="Toggle music">🔇</button>
     <button id="theme-btn" aria-label="Switch theme"><span id="theme-dot"></span>THEME</button>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -898,67 +973,92 @@ body.theme-green{
 <style>
 #overlay-404{
   display:none;position:fixed;inset:0;z-index:99998;
-  background:#07040f;
+  background:#05020c;
   flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:2rem;overflow:hidden;
 }
 #overlay-404 canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
-#overlay-404 .o4-grid{
-  position:absolute;inset:0;z-index:0;pointer-events:none;
-  background-image:linear-gradient(rgba(168,85,247,.045) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(168,85,247,.045) 1px,transparent 1px);
-  background-size:64px 64px;
+
+/* Central glow orb */
+#overlay-404::before{
+  content:'';position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(239,68,68,.1) 0%,rgba(168,85,247,.07) 40%,transparent 70%);
+  pointer-events:none;z-index:1;
+  animation:o4-orb 4s ease infinite;
 }
+#overlay-404::after{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 100% 100% at 50% 50%,transparent 35%,rgba(5,2,12,.95) 100%);
+}
+@keyframes o4-orb{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+
+/* CRT scanlines */
 #overlay-404 .o4-scanlines{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
 }
-#overlay-404 .o4-vignette{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 40%,rgba(7,4,15,.9) 100%);
-}
+
 #overlay-404 .o4-wrap{
-  position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
-  animation:o4-enter .8s cubic-bezier(.23,1,.32,1) both;
+  position:relative;z-index:3;
+  display:flex;flex-direction:column;align-items:center;
+  max-width:540px;width:100%;
+  animation:o4-enter 1s cubic-bezier(.23,1,.32,1) both;
 }
-@keyframes o4-enter{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes o4-enter{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+
+/* SYSTEM CRASH badge */
 #overlay-404 .o4-badge{
   display:inline-flex;align-items:center;gap:.5rem;
-  font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.18em;
-  color:#f87171;background:rgba(248,113,113,.08);
-  border:1px solid rgba(248,113,113,.22);border-radius:100px;
-  padding:.4em 1.1em;margin-bottom:2rem;
+  font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.2em;font-weight:700;
+  color:#fca5a5;background:rgba(239,68,68,.08);
+  border:1px solid rgba(239,68,68,.25);border-radius:100px;
+  padding:.45em 1.2em;margin-bottom:1.6rem;
+  box-shadow:0 0 20px rgba(239,68,68,.08);
 }
 #overlay-404 .o4-badge-dot{
   width:7px;height:7px;border-radius:50%;background:#f87171;
   box-shadow:0 0 8px #f87171;animation:o4-pulse 1.8s ease infinite;
 }
-@keyframes o4-pulse{0%{box-shadow:0 0 0 0 rgba(248,113,113,.6)}70%{box-shadow:0 0 0 10px rgba(248,113,113,0)}100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}}
+@keyframes o4-pulse{
+  0%{box-shadow:0 0 0 0 rgba(248,113,113,.7)}
+  70%{box-shadow:0 0 0 10px rgba(248,113,113,0)}
+  100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}
+}
+
+/* T.AZZ logo */
 #overlay-404 .o4-logo{
-  font-family:'Space Mono',monospace;font-size:clamp(.9rem,3vw,1.1rem);
-  font-weight:700;letter-spacing:.1em;margin-bottom:1rem;color:#fff;
-  filter:drop-shadow(0 0 10px rgba(168,85,247,.5));
+  font-family:'Space Mono',monospace;
+  font-size:clamp(.85rem,2.5vw,1rem);font-weight:700;
+  letter-spacing:.25em;color:rgba(255,255,255,.4);
+  margin-bottom:1.2rem;text-transform:uppercase;
 }
-#overlay-404 .o4-logo span{color:#a855f7}
-#overlay-404 .o4-num-wrap{position:relative;display:inline-block;margin-bottom:1.5rem}
+
+/* 404 number */
+#overlay-404 .o4-num-wrap{position:relative;display:inline-block;margin-bottom:.6rem}
 #overlay-404 .o4-num{
-  font-size:clamp(7rem,30vw,18rem);font-weight:900;line-height:.85;letter-spacing:-.04em;
-  background:linear-gradient(135deg,#fff 0%,#e9d5ff 40%,#c084fc 65%,#e879f9 100%);
+  font-size:clamp(6rem,28vw,16rem);font-weight:900;line-height:.85;letter-spacing:-.04em;
+  background:linear-gradient(135deg,#fff 0%,#fce4e4 25%,#c084fc 55%,#e879f9 80%,#c084fc 100%);
+  background-size:200% 200%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 60px rgba(168,85,247,.45));
+  filter:drop-shadow(0 0 60px rgba(239,68,68,.2)) drop-shadow(0 0 40px rgba(168,85,247,.3));
   position:relative;
+  animation:o4-shimmer 4s linear infinite;
 }
+@keyframes o4-shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* Glitch layers */
 #overlay-404 .o4-num::before{
   content:'404';position:absolute;inset:0;
-  background:linear-gradient(135deg,#fff 0%,#e9d5ff 40%,#c084fc 65%,#e879f9 100%);
+  background:linear-gradient(135deg,#fff 0%,#fce4e4 25%,#c084fc 55%,#e879f9 80%,#c084fc 100%);
+  background-size:200% 200%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  background-size:200% 100%;pointer-events:none;
-  animation:o4-scan 3.5s linear infinite;
+  pointer-events:none;animation:o4-shimmer 4s linear infinite;
 }
-@keyframes o4-scan{0%{background-position:200% 0}100%{background-position:-200% 0}}
 #overlay-404 .o4-num::after{
   content:'404';position:absolute;inset:0;
-  background:linear-gradient(135deg,#e879f9,#c084fc);
+  background:linear-gradient(135deg,#f87171,#e879f9);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   pointer-events:none;opacity:0;
   animation:o4-glitch 5s ease infinite;
@@ -973,37 +1073,64 @@ body.theme-green{
   95%{opacity:0;transform:translate(0,0)}
   100%{opacity:0}
 }
-#overlay-404 .o4-title{font-size:clamp(1.1rem,4vw,1.6rem);font-weight:700;color:#fff;margin-bottom:.6rem}
-#overlay-404 .o4-desc{font-size:clamp(.85rem,2vw,.95rem);color:#8b7aa8;max-width:380px;line-height:1.7;margin-bottom:2.2rem}
+
+/* Divider */
+#overlay-404 .o4-divider{
+  width:clamp(100px,35vw,220px);height:1.5px;
+  background:linear-gradient(90deg,transparent,rgba(239,68,68,.6),rgba(232,121,249,.5),transparent);
+  margin:0.8rem auto 1.8rem;position:relative;
+}
+#overlay-404 .o4-divider::after{
+  content:'';position:absolute;inset:0;background:inherit;filter:blur(4px);opacity:.6;
+}
+
+/* Title */
+#overlay-404 .o4-title{
+  font-size:clamp(1.2rem,4vw,1.7rem);font-weight:800;
+  color:#fff;margin-bottom:.7rem;letter-spacing:.01em;
+  text-shadow:0 0 30px rgba(232,121,249,.2);
+}
+
+/* Desc */
+#overlay-404 .o4-desc{
+  font-size:clamp(.82rem,2vw,.9rem);
+  color:rgba(200,180,220,.65);font-weight:500;font-style:italic;
+  max-width:360px;line-height:1.75;margin-bottom:2.2rem;
+}
+
+/* Button */
 #overlay-404 .o4-actions{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center}
-#overlay-404 .o4-btn-home{
-  display:inline-flex;align-items:center;gap:.4rem;padding:.78em 1.8em;border-radius:100px;
-  background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-weight:600;font-size:.9rem;
-  text-decoration:none;box-shadow:0 4px 24px rgba(168,85,247,.35);
-  transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;
-}
-#overlay-404 .o4-btn-home:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(168,85,247,.5)}
 #overlay-404 .o4-btn-ghost{
-  display:inline-flex;align-items:center;gap:.4rem;padding:.78em 1.8em;border-radius:100px;
-  background:rgba(255,255,255,.04);color:#e2d9f3;font-weight:500;font-size:.9rem;
-  text-decoration:none;border:1.5px solid rgba(168,85,247,.3);
-  transition:border-color .2s,color .2s,transform .2s;-webkit-tap-highlight-color:transparent;
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.8em 2.2em;border-radius:100px;
+  background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(232,121,249,.08));
+  color:#fff;font-family:'Space Mono',monospace;font-weight:700;
+  font-size:.72rem;letter-spacing:.15em;text-decoration:none;
+  border:1.5px solid rgba(239,68,68,.3);
+  box-shadow:0 0 20px rgba(239,68,68,.08),inset 0 1px 0 rgba(255,255,255,.05);
+  transition:all .25s ease;-webkit-tap-highlight-color:transparent;
 }
-#overlay-404 .o4-btn-ghost:hover{border-color:rgba(168,85,247,.6);color:#fff;transform:translateY(-3px)}
+#overlay-404 .o4-btn-ghost:hover{
+  background:linear-gradient(135deg,rgba(239,68,68,.2),rgba(232,121,249,.15));
+  border-color:rgba(248,113,113,.6);
+  box-shadow:0 0 32px rgba(239,68,68,.25);
+  transform:translateY(-2px);
+}
+#overlay-404 .o4-btn-ghost:active{transform:scale(.96)}
 </style>
+
 <div id="overlay-404">
   <canvas id="canvas-404"></canvas>
-  <div class="o4-grid"></div>
   <div class="o4-scanlines"></div>
-  <div class="o4-vignette"></div>
   <div class="o4-wrap">
     <div class="o4-badge"><span class="o4-badge-dot"></span>SYSTEM CRASH</div>
-    <div class="o4-logo">T<span>.</span>AZZ</div>
+    <div class="o4-logo">T . A Z Z</div>
     <div class="o4-num-wrap"><div class="o4-num">404</div></div>
+    <div class="o4-divider"></div>
     <div class="o4-title">A script has crashed.</div>
-    <p class="o4-desc">Something broke and this page went down hard. Try heading back — or reach out if it keeps happening.</p>
+    <p class="o4-desc">Something broke and this page went down hard. Reach out if it keeps happening.</p>
     <div class="o4-actions">
-      <a href="/cdn-cgi/l/email-protection#5c083d2e353d3234641c33292830333337723f3331" class="o4-btn-ghost">Report Issue</a>
+      <a href="mailto:Tarianh8@outlook.com" class="o4-btn-ghost">&#9993; Report Issue</a>
     </div>
   </div>
 </div>
@@ -1921,7 +2048,39 @@ window.addEventListener('scroll', () => {
 }, {passive:true});
 backTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
 
-/* ===== THEME SWITCHER ===== */
+/* ===== MUSIC TOGGLE ===== */
+(function(){
+  const btn = document.getElementById('music-btn');
+  const audio = document.getElementById('bg-music');
+  if(!btn || !audio) return;
+  audio.volume = 0.35;
+  audio.preload = 'auto';
+  let playing = false;
+
+  btn.addEventListener('click', function(){
+    if(!playing){
+      btn.textContent = '⏳';
+      audio.load();
+      const playPromise = audio.play();
+      if(playPromise !== undefined){
+        playPromise.then(()=>{
+          playing = true;
+          btn.textContent = '🎵';
+          btn.classList.add('playing');
+        }).catch((err)=>{
+          console.warn('Audio play failed:', err);
+          btn.textContent = '❌';
+          setTimeout(()=>{ btn.textContent = '🔇'; }, 2000);
+        });
+      }
+    } else {
+      audio.pause();
+      playing = false;
+      btn.textContent = '🔇';
+      btn.classList.remove('playing');
+    }
+  });
+})();
 (function(){
   const themes = [
     { cls:'',         label:'THEME', bg:'#07040f', accent:'168,85,247',  pink:'232,121,249' },
