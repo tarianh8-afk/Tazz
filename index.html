@@ -246,13 +246,13 @@ h1.name{font-size:clamp(4rem,20vw,13rem);font-weight:900;line-height:.88;letter-
 /* SECTIONS */
 main{position:relative;z-index:5}
 section{max-width:1100px;margin:0 auto;padding:var(--sec-py) var(--sec-px)}
-section+section{padding-top:0}
+section+section{padding-top:clamp(1rem,3vw,2rem)}
 .sec-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:'Space Mono',monospace;
   font-size:clamp(.6rem,1.5vw,.68rem);letter-spacing:.22em;color:var(--purple);
   text-transform:uppercase;margin-bottom:.6rem}
 .sec-eyebrow::before{content:'';display:block;width:16px;height:1.5px;background:var(--purple);border-radius:1px}
 .sec-title{font-size:clamp(1.7rem,5vw,3.2rem);font-weight:800;color:var(--white);
-  line-height:1.05;margin-bottom:.8rem}
+  line-height:1.05;margin-bottom:1rem}
 .sec-title em{font-style:normal;background:linear-gradient(90deg,var(--purple-light),var(--pink));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .sec-desc{font-size:clamp(.88rem,2vw,.97rem);color:var(--muted);max-width:500px;line-height:1.8;margin-bottom:2.5rem}
@@ -279,8 +279,9 @@ section+section{padding-top:0}
 .about-bio strong{color:var(--white)}
 .stats-row{display:flex;gap:.75rem;flex-wrap:wrap;margin:1.4rem 0 1.6rem}
 @media(max-width:600px){.stats-row{justify-content:center}}
-.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;
-  padding:.85rem 1.1rem;min-width:78px;transition:border-color .2s,transform .2s,box-shadow .2s}
+.stat-box{background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(168,85,247,.04));border:1px solid rgba(168,85,247,.2);border-radius:14px;
+  padding:.85rem 1.1rem;min-width:78px;transition:border-color .2s,transform .2s,box-shadow .2s;
+  box-shadow:0 0 20px rgba(168,85,247,.04),inset 0 1px 0 rgba(255,255,255,.05)}
 @media(hover:hover) and (pointer:fine){.stat-box:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:0 8px 24px rgba(168,85,247,.1)}}
 .stat-num{font-size:clamp(1.3rem,3vw,1.6rem);font-weight:800;color:var(--purple-light);line-height:1}
 .stat-lbl{font-size:.67rem;color:var(--muted);margin-top:.2rem;font-weight:500}
@@ -386,17 +387,93 @@ section+section{padding-top:0}
 @media(hover:hover) and (pointer:fine){.submit-btn:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(168,85,247,.45)}}
 
 /* FOOTER */
-footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
+footer{
+  border-top:1px solid var(--border);
+  padding:2rem var(--sec-px);
   display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:.8rem;position:relative;z-index:5}
+  flex-wrap:wrap;gap:1rem;position:relative;z-index:5;
+  background:linear-gradient(180deg,transparent,rgba(168,85,247,.03));
+}
 .footer-logo{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(.9rem,2.5vw,1rem);
-  color:var(--white);text-decoration:none}
+  color:var(--white);text-decoration:none;
+  filter:drop-shadow(0 0 8px rgba(168,85,247,.3));
+}
 .footer-logo span{color:var(--purple)}
-.footer-copy{font-size:.72rem;color:var(--muted)}
-.footer-links{display:flex;gap:1.2rem}
-.footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-copy{font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+.footer-links{display:flex;gap:1.4rem}
+.footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;
+  transition:color .2s;letter-spacing:.04em}
 @media(hover:hover) and (pointer:fine){.footer-links a:hover{color:var(--purple-light)}}
-@media(max-width:480px){footer{flex-direction:column;align-items:center;text-align:center;gap:.6rem}.footer-links{gap:1rem}}
+@media(max-width:480px){footer{flex-direction:column;align-items:center;text-align:center;gap:.8rem}.footer-links{gap:1rem}}
+
+
+/* BACK TO TOP */
+#back-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;width:42px;height:42px;border-radius:12px;background:rgba(168,85,247,.15);border:1.5px solid rgba(168,85,247,.3);color:var(--purple-light);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:all .3s ease;box-shadow:0 0 16px rgba(168,85,247,.15);-webkit-tap-highlight-color:transparent}
+#back-top.show{opacity:1;pointer-events:all}
+#back-top:hover{background:rgba(168,85,247,.25);box-shadow:0 0 24px rgba(168,85,247,.3);transform:translateY(-3px)}
+#back-top:active{transform:scale(.92)}
+
+/* THEME BTN */
+#theme-btn{position:fixed;bottom:1.5rem;left:1.5rem;z-index:500;width:42px;height:42px;border-radius:12px;background:rgba(168,85,247,.15);border:1.5px solid rgba(168,85,247,.3);color:var(--purple-light);font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s ease;box-shadow:0 0 16px rgba(168,85,247,.15);-webkit-tap-highlight-color:transparent}
+#theme-btn:hover{background:rgba(168,85,247,.25);box-shadow:0 0 24px rgba(168,85,247,.3)}
+#theme-btn:active{transform:scale(.92)}
+body.theme-blue{--purple:#3b82f6;--purple-light:#60a5fa;--purple-dark:#1d4ed8;--pink:#06b6d4;--border:rgba(59,130,246,.18);--border-hover:rgba(59,130,246,.45);--surface:rgba(59,130,246,.04)}
+body.theme-red{--purple:#ef4444;--purple-light:#f87171;--purple-dark:#b91c1c;--pink:#f97316;--border:rgba(239,68,68,.18);--border-hover:rgba(239,68,68,.45);--surface:rgba(239,68,68,.04)}
+body.theme-green{--purple:#10b981;--purple-light:#34d399;--purple-dark:#059669;--pink:#06b6d4;--border:rgba(16,185,129,.18);--border-hover:rgba(16,185,129,.45);--surface:rgba(16,185,129,.04)}
+
+/* SPONSORS BANNER */
+.sponsors-banner{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(232,121,249,.05));
+  border:1.5px solid rgba(168,85,247,.22);border-radius:20px;
+  padding:1.2rem 1.6rem;margin-bottom:2.5rem;
+  position:relative;overflow:hidden;
+  box-shadow:0 0 30px rgba(168,85,247,.06),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.sponsors-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(168,85,247,.05),transparent);animation:banner-shine 4s ease infinite}
+@keyframes banner-shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.sponsors-banner-left{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.sponsors-tag{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.15em;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;
+  white-space:nowrap;
+}
+.sponsors-text{font-size:.88rem;color:var(--text)}
+.sponsors-text strong{color:var(--white)}
+.sponsors-btn{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;border:none;border-radius:100px;padding:.5em 1.2em;
+  cursor:pointer;text-decoration:none;white-space:nowrap;
+  box-shadow:0 0 16px rgba(168,85,247,.3);-webkit-tap-highlight-color:transparent;
+  transition:box-shadow .2s,transform .2s}
+.sponsors-btn:active{transform:scale(.95)}
+
+/* COUNTDOWN */
+.countdown-wrap{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;
+  background:linear-gradient(135deg,rgba(168,85,247,.07),rgba(232,121,249,.04));
+  border:1.5px solid rgba(168,85,247,.2);border-radius:20px;
+  padding:1.6rem 2rem;margin-bottom:2rem;
+  box-shadow:0 0 30px rgba(168,85,247,.06),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.countdown-label{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.2em;color:var(--purple-light)}
+.countdown-timer{display:flex;gap:.8rem;align-items:center}
+.cd-block{text-align:center;min-width:52px;
+  background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.18);
+  border-radius:12px;padding:.5rem .6rem;
+}
+.cd-num{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800;color:var(--white);line-height:1;font-family:'Space Mono',monospace;text-shadow:0 0 20px rgba(168,85,247,.5)}
+.cd-lbl{font-size:.55rem;color:var(--muted);letter-spacing:.12em;margin-top:.3rem;text-transform:uppercase}
+.cd-sep{font-size:1.6rem;color:rgba(168,85,247,.5);font-weight:700;line-height:1;margin-bottom:.5rem}
+#countdown-status{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.1em;color:var(--muted);text-align:center}
+
+/* PROJECT PROGRESS */
+.proj-progress{margin-top:.8rem}
+.proj-prog-row{display:flex;justify-content:space-between;margin-bottom:.3rem}
+.proj-prog-label{font-size:.65rem;color:var(--muted);letter-spacing:.06em}
+.proj-prog-pct{font-size:.65rem;color:var(--purple-light);font-family:'Space Mono',monospace}
+.proj-prog-bar{height:3px;background:rgba(168,85,247,.12);border-radius:2px;overflow:hidden}
+.proj-prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--purple),var(--pink));box-shadow:0 0 8px rgba(168,85,247,.4);transition:width 1.2s cubic-bezier(.4,0,.2,1);width:0%}
 
 /* PROJECTS */
 .projects-slider-wrap{position:relative}
@@ -552,6 +629,10 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
 .schedule-note a:hover{text-decoration:underline}
 
 /* UTILS */
+/* Section alternating subtle bg */
+#schedule,#projects,#contact{
+  background:linear-gradient(180deg,transparent,rgba(168,85,247,.025) 50%,transparent);
+}
 .reveal{opacity:1;transform:translateY(0);transition:opacity .6s ease,transform .6s ease}
 .reveal.hidden{opacity:0;transform:translateY(20px)}
 /* ── MAINTENANCE OVERLAY ── */
@@ -718,7 +799,7 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
       <a href="https://www.tiktok.com/@nsg_tazz" target="_blank" class="mobile-footer-social">&#127925;</a>
       <a href="https://www.youtube.com/@TAZFNFV" target="_blank" class="mobile-footer-social">&#9654;&#65039;</a>
       <a href="https://discord.com/users/devtazz" target="_blank" class="mobile-footer-social">&#128172;</a>
-      <a href="mailto:Tarianh8@outlook.com" class="mobile-footer-social">&#128231;</a>
+      <a href="/cdn-cgi/l/email-protection#0e5a6f7c676f6066364e617b7a62616165206d6163" class="mobile-footer-social">&#128231;</a>
     </div>
     <div class="mobile-menu-tag">NSG TAZZ 🪐</div>
   </div>
@@ -773,6 +854,17 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
   <p class="sec-eyebrow reveal">Live Schedule</p>
   <h2 class="sec-title reveal">Catch me <em>live</em></h2>
   <p class="sec-desc reveal">Streaming on TikTok every week &mdash; UK time. Follow <a href="https://www.tiktok.com/@nsg_tazz" target="_blank" rel="noopener" style="color:var(--purple-light);text-decoration:none">@nsg_tazz</a> so you never miss a stream.</p>
+  <div class="countdown-wrap reveal">
+    <span class="countdown-label">&#9201; NEXT STREAM IN</span>
+    <div class="countdown-timer">
+      <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">HRS</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">MIN</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">SEC</div></div>
+    </div>
+    <div id="countdown-status">Calculating...</div>
+  </div>
   <div class="schedule-wrap">
     <div class="sched-card reveal" data-day="1">
       <div class="sched-day">Monday</div>
@@ -889,6 +981,10 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
           <div class="proj-footer">
             <div class="proj-engine">&#128187; <span>Roblox Studio</span></div>
           </div>
+          <div class="proj-progress">
+            <div class="proj-prog-row"><span class="proj-prog-label">PROGRESS</span><span class="proj-prog-pct">35%</span></div>
+            <div class="proj-prog-bar"><div class="proj-prog-fill" data-pct="35"></div></div>
+          </div>
         </div>
       </div>
 
@@ -904,6 +1000,10 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
           <p class="proj-desc">An open-world driving experience. Unlock, upgrade and push cars to their limit across a growing map.</p>
           <div class="proj-footer">
             <div class="proj-engine">&#128187; <span>Roblox Studio</span></div>
+          </div>
+          <div class="proj-progress">
+            <div class="proj-prog-row"><span class="proj-prog-label">PROGRESS</span><span class="proj-prog-pct">20%</span></div>
+            <div class="proj-prog-bar"><div class="proj-prog-fill" data-pct="20"></div></div>
           </div>
         </div>
       </div>
@@ -925,6 +1025,10 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
               View page &#8594;
             </a>
           </div>
+          <div class="proj-progress">
+            <div class="proj-prog-row"><span class="proj-prog-label">PROGRESS</span><span class="proj-prog-pct">60%</span></div>
+            <div class="proj-prog-bar"><div class="proj-prog-fill" data-pct="60"></div></div>
+          </div>
         </div>
       </div>
 
@@ -944,6 +1048,13 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
   <p class="sec-eyebrow reveal">Contact</p>
   <h2 class="sec-title reveal">Let's <em>connect</em></h2>
   <div class="divider reveal"></div>
+  <div class="sponsors-banner reveal">
+    <div class="sponsors-banner-left">
+      <span class="sponsors-tag">&#128176; OPEN FOR DEALS</span>
+      <span class="sponsors-text"><strong>Taking sponsors &amp; collabs</strong> — brands, tournaments, content</span>
+    </div>
+    <a href="mailto:Tarianh8@outlook.com" class="sponsors-btn">Get in Touch &#8594;</a>
+  </div>
   <div class="contact-wrap">
     <div class="reveal">
       <div class="contact-info-title">Get in touch</div>
@@ -970,15 +1081,20 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
 
 <footer>
   <a href="#" class="footer-logo">T<span>.</span>AZZ</a>
-  <div class="footer-copy">&copy; 2025 Tazz &mdash; All rights reserved</div>
+  <div class="footer-copy">&copy; 2026 Tazz &mdash; All rights reserved</div>
   <div class="footer-links">
     <a href="#about">About</a>
-    <a href="#socials">Socials</a>
-    <a href="#esports">Esports</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<!-- FLOATING BUTTONS -->
+<button id="back-top" aria-label="Back to top">&#8679;</button>
+<button id="theme-btn" aria-label="Switch theme">&#127752;</button>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* MAINTENANCE moved to top */
 if(MAINTENANCE){
   document.addEventListener('DOMContentLoaded', function(){
@@ -1528,6 +1644,96 @@ document.getElementById('sendBtn').addEventListener('click',async function(){
     btn.textContent='Send Message';btn.disabled=false;btn.style.opacity='';
   }
 });
+
+/* ===== BACK TO TOP ===== */
+const backTop = document.getElementById('back-top');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('show', window.scrollY > 400);
+}, {passive:true});
+backTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+/* ===== THEME SWITCHER ===== */
+(function(){
+  const themes = ['', 'theme-blue', 'theme-red', 'theme-green'];
+  const icons = ['\uD83C\uDFA8', '\uD83D\uDC99', '\u2764\uFE0F', '\uD83D\uDC9A'];
+  let idx = 0;
+  const btn = document.getElementById('theme-btn');
+  if(!btn) return;
+  btn.addEventListener('click', function(){
+    if(themes[idx]) document.body.classList.remove(themes[idx]);
+    idx = (idx + 1) % themes.length;
+    if(themes[idx]) document.body.classList.add(themes[idx]);
+    btn.textContent = icons[idx];
+  });
+})();
+
+/* ===== STREAM COUNTDOWN ===== */
+(function(){
+  const schedule = [
+    {day:1, start:[17,30], end:[20,0]},
+    {day:2, start:[17,50], end:[20,30]},
+    {day:3, start:[17,30], end:[20,30]},
+    {day:4, start:[18,0],  end:[21,0]},
+    {day:5, start:[20,0],  end:[22,0]},
+  ];
+  function updateCountdown(){
+    const now = new Date();
+    const uk = new Date(now.toLocaleString('en-GB', {timeZone:'Europe/London'}));
+    const day = uk.getDay(); // 0=Sun
+    const h = uk.getHours(), m = uk.getMinutes(), s = uk.getSeconds();
+    const nowMins = h*60+m;
+    // Check if live now
+    for(const slot of schedule){
+      if(slot.day === day){
+        const startMins = slot.start[0]*60+slot.start[1];
+        const endMins = slot.end[0]*60+slot.end[1];
+        if(nowMins >= startMins && nowMins < endMins){
+          document.getElementById('cd-h').textContent='00';
+          document.getElementById('cd-m').textContent='00';
+          document.getElementById('cd-s').textContent='00';
+          document.getElementById('countdown-status').textContent='🔴 LIVE RIGHT NOW — TUNE IN!';
+          document.getElementById('countdown-status').style.color='#f87171';
+          return;
+        }
+      }
+    }
+    // Find next stream
+    let minDiff = Infinity, nextLabel = '';
+    for(const slot of schedule){
+      let diff = (slot.day - day + 7) % 7;
+      const startMins = slot.start[0]*60+slot.start[1];
+      if(diff === 0 && nowMins >= startMins) diff = 7;
+      const totalSecs = diff*86400 + startMins*60 - (h*3600+m*60+s);
+      if(totalSecs < minDiff){ minDiff = totalSecs; nextLabel = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][slot.day]; }
+    }
+    const hh = Math.floor(minDiff/3600);
+    const mm = Math.floor((minDiff%3600)/60);
+    const ss = minDiff%60;
+    document.getElementById('cd-h').textContent = String(hh).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(mm).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(ss).padStart(2,'0');
+    document.getElementById('countdown-status').textContent = 'Next stream: ' + nextLabel + ' on TikTok';
+    document.getElementById('countdown-status').style.color = '';
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+
+/* ===== PROJECT PROGRESS BARS ===== */
+(function(){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.querySelectorAll('.proj-prog-fill').forEach(bar => {
+          bar.style.width = bar.dataset.pct + '%';
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.3});
+  document.querySelectorAll('.proj-card').forEach(card => observer.observe(card));
+})();
+
 </script>
 </body>
 </html>
