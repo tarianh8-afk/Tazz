@@ -2,10 +2,17 @@
 <script>
 /* ========================================
    🔧 MAINTENANCE MODE
-   Change false to true  = site goes offline
-   Change true to false  = site comes back
+   Change false → true  = site goes offline
+   Change true  → false = site comes back
    ======================================== */
 const MAINTENANCE = false;
+
+/* ========================================
+   🚫 404 MODE
+   Change false → true  = show 404 page
+   Change true  → false = show normal site
+   ======================================== */
+const SHOW_404 = true;
 </script>
 <html lang="en">
 <head>
@@ -210,10 +217,43 @@ header{position:relative;z-index:10;min-height:100svh;display:flex;flex-directio
 .pill-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);
   box-shadow:0 0 8px var(--purple);animation:pulse-dot 2s ease infinite}
 @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
-h1.name{font-size:clamp(4rem,20vw,13rem);font-weight:900;line-height:.88;letter-spacing:-.02em;
+h1.name{
+  font-size:clamp(4rem,20vw,13rem);font-weight:900;line-height:.88;letter-spacing:-.02em;
   background:linear-gradient(135deg,#fff 0%,#e9d5ff 45%,var(--purple-light) 70%,var(--pink) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 40px rgba(168,85,247,.35));animation:fadeup .7s .1s ease both}
+  filter:drop-shadow(0 0 40px rgba(168,85,247,.35));
+  animation:fadeup .7s .1s ease both;
+  position:relative;display:inline-block;
+}
+/* Scanline sweep */
+h1.name::before{
+  content:'TAZZ';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#fff 0%,#e9d5ff 45%,var(--purple-light) 70%,var(--pink) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200% 100%;pointer-events:none;
+  animation:tazz-scan 3.5s linear infinite;
+}
+@keyframes tazz-scan{0%{background-position:200% 0}100%{background-position:-200% 0}}
+/* Glitch */
+h1.name::after{
+  content:'TAZZ';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--pink),var(--purple-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  pointer-events:none;opacity:0;
+  animation:tazz-glitch 5s ease infinite;
+}
+@keyframes tazz-glitch{
+  0%,87%{opacity:0;transform:translate(0,0)}
+  88%{opacity:.8;transform:translate(-4px,1px);clip-path:polygon(0 15%,100% 15%,100% 30%,0 30%)}
+  89%{opacity:0}
+  91%{opacity:.6;transform:translate(3px,-2px);clip-path:polygon(0 60%,100% 60%,100% 75%,0 75%)}
+  92%{opacity:0}
+  94%{opacity:.7;transform:translate(-2px,2px);clip-path:polygon(0 40%,100% 40%,100% 48%,0 48%)}
+  95%{opacity:0;transform:translate(0,0)}
+  100%{opacity:0}
+}
 .hero-sub{font-family:'Space Mono',monospace;font-size:clamp(.55rem,2vw,.82rem);
   color:var(--muted);letter-spacing:.28em;margin-top:.9rem;animation:fadeup .7s .2s ease both}
 .hero-actions{display:flex;gap:.75rem;margin-top:2.2rem;animation:fadeup .7s .35s ease both;
@@ -413,13 +453,44 @@ footer{
 #back-top:hover{background:rgba(168,85,247,.25);box-shadow:0 0 24px rgba(168,85,247,.3);transform:translateY(-3px)}
 #back-top:active{transform:scale(.92)}
 
-/* THEME BTN */
-#theme-btn{position:fixed;bottom:1.5rem;left:1.5rem;z-index:500;width:42px;height:42px;border-radius:12px;background:rgba(168,85,247,.15);border:1.5px solid rgba(168,85,247,.3);color:var(--purple-light);font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s ease;box-shadow:0 0 16px rgba(168,85,247,.15);-webkit-tap-highlight-color:transparent}
-#theme-btn:hover{background:rgba(168,85,247,.25);box-shadow:0 0 24px rgba(168,85,247,.3)}
-#theme-btn:active{transform:scale(.92)}
-body.theme-blue{--purple:#3b82f6;--purple-light:#60a5fa;--purple-dark:#1d4ed8;--pink:#06b6d4;--border:rgba(59,130,246,.18);--border-hover:rgba(59,130,246,.45);--surface:rgba(59,130,246,.04)}
-body.theme-red{--purple:#ef4444;--purple-light:#f87171;--purple-dark:#b91c1c;--pink:#f97316;--border:rgba(239,68,68,.18);--border-hover:rgba(239,68,68,.45);--surface:rgba(239,68,68,.04)}
-body.theme-green{--purple:#10b981;--purple-light:#34d399;--purple-dark:#059669;--pink:#06b6d4;--border:rgba(16,185,129,.18);--border-hover:rgba(16,185,129,.45);--surface:rgba(16,185,129,.04)}
+/* THEME BTN - in nav */
+#theme-btn{
+  display:flex;align-items:center;gap:.45rem;
+  padding:.38em .9em;border-radius:100px;
+  background:rgba(168,85,247,.12);
+  border:1.5px solid rgba(168,85,247,.3);
+  color:var(--purple-light);font-size:.7rem;
+  font-family:'Space Mono',monospace;letter-spacing:.08em;
+  cursor:pointer;transition:all .25s ease;
+  box-shadow:0 0 14px rgba(168,85,247,.12);
+  -webkit-tap-highlight-color:transparent;
+  white-space:nowrap;flex-shrink:0;
+}
+#theme-btn:hover{background:rgba(168,85,247,.22);box-shadow:0 0 22px rgba(168,85,247,.28);color:#fff}
+#theme-btn:active{transform:scale(.94)}
+#theme-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--purple);
+  box-shadow:0 0 8px var(--purple);
+  transition:background .3s,box-shadow .3s;
+  flex-shrink:0;
+}
+/* Theme colour schemes */
+body.theme-blue{
+  --bg:#040a14;
+  --purple:#3b82f6;--purple-light:#60a5fa;--purple-dark:#1d4ed8;--pink:#06b6d4;
+  --border:rgba(59,130,246,.18);--border-hover:rgba(59,130,246,.45);--surface:rgba(59,130,246,.04);
+}
+body.theme-red{
+  --bg:#140406;
+  --purple:#ef4444;--purple-light:#f87171;--purple-dark:#b91c1c;--pink:#f97316;
+  --border:rgba(239,68,68,.18);--border-hover:rgba(239,68,68,.45);--surface:rgba(239,68,68,.04);
+}
+body.theme-green{
+  --bg:#04140a;
+  --purple:#10b981;--purple-light:#34d399;--purple-dark:#059669;--pink:#06b6d4;
+  --border:rgba(16,185,129,.18);--border-hover:rgba(16,185,129,.45);--surface:rgba(16,185,129,.04);
+}
 
 /* SPONSORS BANNER */
 .sponsors-banner{
@@ -775,10 +846,128 @@ body.theme-green{--purple:#10b981;--purple-light:#34d399;--purple-dark:#059669;-
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <div style="display:flex;align-items:center;gap:.6rem;flex-shrink:0">
+    <button id="theme-btn" aria-label="Switch theme"><span id="theme-dot"></span>THEME</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
+
+<!-- 404 OVERLAY -->
+<style>
+#overlay-404{
+  display:none;position:fixed;inset:0;z-index:99998;
+  background:#07040f;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;overflow:hidden;
+}
+#overlay-404 canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+#overlay-404 .o4-grid{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(168,85,247,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(168,85,247,.045) 1px,transparent 1px);
+  background-size:64px 64px;
+}
+#overlay-404 .o4-scanlines{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);
+}
+#overlay-404 .o4-vignette{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 40%,rgba(7,4,15,.9) 100%);
+}
+#overlay-404 .o4-wrap{
+  position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;
+  animation:o4-enter .8s cubic-bezier(.23,1,.32,1) both;
+}
+@keyframes o4-enter{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+#overlay-404 .o4-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.18em;
+  color:#f87171;background:rgba(248,113,113,.08);
+  border:1px solid rgba(248,113,113,.22);border-radius:100px;
+  padding:.4em 1.1em;margin-bottom:2rem;
+}
+#overlay-404 .o4-badge-dot{
+  width:7px;height:7px;border-radius:50%;background:#f87171;
+  box-shadow:0 0 8px #f87171;animation:o4-pulse 1.8s ease infinite;
+}
+@keyframes o4-pulse{0%{box-shadow:0 0 0 0 rgba(248,113,113,.6)}70%{box-shadow:0 0 0 10px rgba(248,113,113,0)}100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}}
+#overlay-404 .o4-logo{
+  font-family:'Space Mono',monospace;font-size:clamp(.9rem,3vw,1.1rem);
+  font-weight:700;letter-spacing:.1em;margin-bottom:1rem;color:#fff;
+  filter:drop-shadow(0 0 10px rgba(168,85,247,.5));
+}
+#overlay-404 .o4-logo span{color:#a855f7}
+#overlay-404 .o4-num-wrap{position:relative;display:inline-block;margin-bottom:1.5rem}
+#overlay-404 .o4-num{
+  font-size:clamp(7rem,30vw,18rem);font-weight:900;line-height:.85;letter-spacing:-.04em;
+  background:linear-gradient(135deg,#fff 0%,#e9d5ff 40%,#c084fc 65%,#e879f9 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 60px rgba(168,85,247,.45));
+  position:relative;
+}
+#overlay-404 .o4-num::before{
+  content:'404';position:absolute;inset:0;
+  background:linear-gradient(135deg,#fff 0%,#e9d5ff 40%,#c084fc 65%,#e879f9 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200% 100%;pointer-events:none;
+  animation:o4-scan 3.5s linear infinite;
+}
+@keyframes o4-scan{0%{background-position:200% 0}100%{background-position:-200% 0}}
+#overlay-404 .o4-num::after{
+  content:'404';position:absolute;inset:0;
+  background:linear-gradient(135deg,#e879f9,#c084fc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  pointer-events:none;opacity:0;
+  animation:o4-glitch 5s ease infinite;
+}
+@keyframes o4-glitch{
+  0%,87%{opacity:0;transform:translate(0,0)}
+  88%{opacity:.8;transform:translate(-4px,1px);clip-path:polygon(0 15%,100% 15%,100% 30%,0 30%)}
+  89%{opacity:0}
+  91%{opacity:.6;transform:translate(3px,-2px);clip-path:polygon(0 60%,100% 60%,100% 75%,0 75%)}
+  92%{opacity:0}
+  94%{opacity:.7;transform:translate(-2px,2px);clip-path:polygon(0 40%,100% 40%,100% 48%,0 48%)}
+  95%{opacity:0;transform:translate(0,0)}
+  100%{opacity:0}
+}
+#overlay-404 .o4-title{font-size:clamp(1.1rem,4vw,1.6rem);font-weight:700;color:#fff;margin-bottom:.6rem}
+#overlay-404 .o4-desc{font-size:clamp(.85rem,2vw,.95rem);color:#8b7aa8;max-width:380px;line-height:1.7;margin-bottom:2.2rem}
+#overlay-404 .o4-actions{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center}
+#overlay-404 .o4-btn-home{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.78em 1.8em;border-radius:100px;
+  background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-weight:600;font-size:.9rem;
+  text-decoration:none;box-shadow:0 4px 24px rgba(168,85,247,.35);
+  transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;
+}
+#overlay-404 .o4-btn-home:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(168,85,247,.5)}
+#overlay-404 .o4-btn-ghost{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.78em 1.8em;border-radius:100px;
+  background:rgba(255,255,255,.04);color:#e2d9f3;font-weight:500;font-size:.9rem;
+  text-decoration:none;border:1.5px solid rgba(168,85,247,.3);
+  transition:border-color .2s,color .2s,transform .2s;-webkit-tap-highlight-color:transparent;
+}
+#overlay-404 .o4-btn-ghost:hover{border-color:rgba(168,85,247,.6);color:#fff;transform:translateY(-3px)}
+</style>
+<div id="overlay-404">
+  <canvas id="canvas-404"></canvas>
+  <div class="o4-grid"></div>
+  <div class="o4-scanlines"></div>
+  <div class="o4-vignette"></div>
+  <div class="o4-wrap">
+    <div class="o4-badge"><span class="o4-badge-dot"></span>PAGE NOT FOUND</div>
+    <div class="o4-logo">T<span>.</span>AZZ</div>
+    <div class="o4-num-wrap"><div class="o4-num">404</div></div>
+    <div class="o4-title">You're off the map.</div>
+    <p class="o4-desc">This page doesn't exist — or maybe it got deleted. Head back to the main site.</p>
+    <div class="o4-actions">
+      <a href="#" onclick="document.getElementById('overlay-404').style.display='none';return false;" class="o4-btn-home">← Back to Home</a>
+      <a href="#contact" onclick="document.getElementById('overlay-404').style.display='none';return false;" class="o4-btn-ghost">Contact Tazz</a>
+    </div>
+  </div>
+</div>
 
 <!-- MOBILE DRAWER -->
 <div class="mobile-menu" id="mobileMenu">
@@ -1053,7 +1242,7 @@ body.theme-green{--purple:#10b981;--purple-light:#34d399;--purple-dark:#059669;-
       <span class="sponsors-tag">&#128176; OPEN FOR DEALS</span>
       <span class="sponsors-text"><strong>Taking sponsors &amp; collabs</strong> — brands, tournaments, content</span>
     </div>
-    <a href="mailto:Tarianh8@outlook.com" class="sponsors-btn">Get in Touch &#8594;</a>
+    <a href="/cdn-cgi/l/email-protection#eeba8f9c878f8086d6ae819b9a82818185c08d8183" class="sponsors-btn">Get in Touch &#8594;</a>
   </div>
   <div class="contact-wrap">
     <div class="reveal">
@@ -1092,10 +1281,46 @@ body.theme-green{--purple:#10b981;--purple-light:#34d399;--purple-dark:#059669;-
 
 <!-- FLOATING BUTTONS -->
 <button id="back-top" aria-label="Back to top">&#8679;</button>
-<button id="theme-btn" aria-label="Switch theme">&#127752;</button>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* MAINTENANCE moved to top */
+if(SHOW_404){
+  document.addEventListener('DOMContentLoaded', function(){
+    const overlay = document.getElementById('overlay-404');
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    document.querySelectorAll('body > *:not(#overlay-404):not(#cur-dot):not(#cur-ring):not(#cur-trail-canvas-wrap)').forEach(function(el){
+      el.style.display = 'none';
+    });
+    overlay.style.display = 'flex';
+    // Canvas particles for 404
+    const c4 = document.getElementById('canvas-404');
+    if(c4){
+      const x4 = c4.getContext('2d');
+      let W4,H4,p4=[];
+      const m4={x:-1000,y:-1000};
+      function r4(){W4=c4.width=window.innerWidth;H4=c4.height=window.innerHeight}
+      r4();
+      window.addEventListener('resize',r4);
+      window.addEventListener('mousemove',e=>{m4.x=e.clientX;m4.y=e.clientY});
+      const COLS4=[[168,85,247],[192,132,252],[232,121,249],[216,180,254],[255,255,255]];
+      function i4(){p4=[];const n=Math.min(Math.floor((W4*H4)/5500),160);for(let i=0;i<n;i++){const col=COLS4[Math.floor(Math.random()*COLS4.length)];p4.push({x:Math.random()*W4,y:Math.random()*H4,vx:(Math.random()-.5)*.15,vy:-(Math.random()*.2+.15),size:Math.random()*1.5+.3,wave:Math.random()*Math.PI*2,twinkle:Math.random()*Math.PI*2,r:col[0],g:col[1],b:col[2]});}}
+      i4();
+      let g4=0;
+      function l4(){
+        x4.clearRect(0,0,W4,H4);g4+=.3;
+        const gs=64,cols=Math.ceil(W4/gs)+2,rows=Math.ceil(H4/gs)+2,ox=g4%gs;
+        for(let i=-1;i<cols;i++){const x=i*gs-ox;x4.beginPath();x4.moveTo(x,0);x4.lineTo(x,H4);x4.strokeStyle='rgba(168,85,247,.045)';x4.lineWidth=.5;x4.stroke();}
+        for(let i=-1;i<rows;i++){const y=i*gs-ox;x4.beginPath();x4.moveTo(0,y);x4.lineTo(W4,y);x4.strokeStyle='rgba(168,85,247,.045)';x4.lineWidth=.5;x4.stroke();}
+        for(let i=0;i<p4.length;i++)for(let j=i+1;j<p4.length;j++){const dx=p4[i].x-p4[j].x,dy=p4[i].y-p4[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<140){x4.beginPath();x4.moveTo(p4[i].x,p4[i].y);x4.lineTo(p4[j].x,p4[j].y);x4.strokeStyle=`rgba(168,85,247,${(1-d/140)*.18})`;x4.lineWidth=.5;x4.stroke();}}
+        p4.forEach(p=>{p.wave+=.018;p.twinkle+=.038;p.x+=p.vx+Math.sin(p.wave)*.16;p.y+=p.vy;const dx=p.x-m4.x,dy=p.y-m4.y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<85){const f=(85-dist)/85;p.x+=(dx/dist)*f*1.1;p.y+=(dy/dist)*f*1.1;}if(p.y<-20){p.x=Math.random()*W4;p.y=H4+5;}const a=.65+.35*Math.sin(p.twinkle);const g=x4.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*4);g.addColorStop(0,`rgba(${p.r},${p.g},${p.b},${a*.55})`);g.addColorStop(1,`rgba(${p.r},${p.g},${p.b},0)`);x4.beginPath();x4.arc(p.x,p.y,p.size*4,0,Math.PI*2);x4.fillStyle=g;x4.fill();x4.beginPath();x4.arc(p.x,p.y,p.size,0,Math.PI*2);x4.fillStyle=`rgba(${p.r},${p.g},${p.b},${a*.8})`;x4.fill();});
+        requestAnimationFrame(l4);
+      }
+      l4();
+    }
+  });
+}
+
 if(MAINTENANCE){
   document.addEventListener('DOMContentLoaded', function(){
     const overlay = document.getElementById('maint-overlay');
@@ -1654,16 +1879,38 @@ backTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth
 
 /* ===== THEME SWITCHER ===== */
 (function(){
-  const themes = ['', 'theme-blue', 'theme-red', 'theme-green'];
-  const icons = ['\uD83C\uDFA8', '\uD83D\uDC99', '\u2764\uFE0F', '\uD83D\uDC9A'];
+  const themes = [
+    { cls:'',         label:'THEME', bg:'#07040f', accent:'168,85,247',  pink:'232,121,249' },
+    { cls:'theme-blue',  label:'BLUE',  bg:'#040a14', accent:'59,130,246',  pink:'6,182,212'   },
+    { cls:'theme-red',   label:'RED',   bg:'#140406', accent:'239,68,68',   pink:'249,115,22'  },
+    { cls:'theme-green', label:'GREEN', bg:'#04140a', accent:'16,185,129',  pink:'6,182,212'   },
+  ];
   let idx = 0;
   const btn = document.getElementById('theme-btn');
+  const dot = document.getElementById('theme-dot');
+  const curDot = document.getElementById('cur-dot');
+  const curRing = document.getElementById('cur-ring');
   if(!btn) return;
+
+  function applyTheme(t){
+    // Background
+    document.body.style.background = t.bg;
+    // Cursor colours
+    if(curDot) curDot.style.boxShadow = `0 0 8px 2px rgba(${t.accent},.9), 0 0 20px rgba(${t.accent},.6)`;
+    if(curRing) curRing.style.borderColor = `rgba(${t.accent},.7)`;
+    // Dot indicator in button
+    if(dot) dot.style.cssText = `width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:background .3s,box-shadow .3s;background:rgba(${t.accent},1);box-shadow:0 0 8px rgba(${t.accent},1)`;
+    // Button label
+    btn.childNodes[btn.childNodes.length-1].textContent = ' ' + t.label;
+  }
+
+  applyTheme(themes[0]);
+
   btn.addEventListener('click', function(){
-    if(themes[idx]) document.body.classList.remove(themes[idx]);
+    if(themes[idx].cls) document.body.classList.remove(themes[idx].cls);
     idx = (idx + 1) % themes.length;
-    if(themes[idx]) document.body.classList.add(themes[idx]);
-    btn.textContent = icons[idx];
+    if(themes[idx].cls) document.body.classList.add(themes[idx].cls);
+    applyTheme(themes[idx]);
   });
 })();
 
