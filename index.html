@@ -5,14 +5,14 @@
    Change false → true  = site goes offline
    Change true  → false = site comes back
    ======================================== */
-const MAINTENANCE = false;
+const MAINTENANCE = true;
 
 /* ========================================
    🚫 404 MODE
    Change false → true  = show 404 page
    Change true  → false = show normal site
    ======================================== */
-const SHOW_404 = true;
+const SHOW_404 = false;
 </script>
 <html lang="en">
 <head>
@@ -709,101 +709,135 @@ body.theme-green{
 /* ── MAINTENANCE OVERLAY ── */
 #maint-overlay{
   display:none;position:fixed;inset:0;z-index:99999;
-  background:#07040f;
+  background:#06030e;
   flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:2rem;overflow:hidden;
 }
 #maint-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 #maint-overlay::before{
   content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 30%,rgba(7,4,15,.85) 100%);
+  background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 30%,rgba(6,3,14,.85) 100%);
 }
 .maint-inner{
   position:relative;z-index:2;
   display:flex;flex-direction:column;align-items:center;
   animation:maint-enter .9s cubic-bezier(.23,1,.32,1) both;
+  max-width:600px;width:100%;
 }
 @keyframes maint-enter{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
-.maint-status{
-  display:inline-flex;align-items:center;gap:.6rem;
-  font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.2em;
-  color:#f87171;background:rgba(248,113,113,.08);
-  border:1px solid rgba(248,113,113,.25);border-radius:100px;
-  padding:.45em 1.2em;margin-bottom:2.8rem;
+
+/* Big gear top */
+.maint-gear-wrap{
+  margin-bottom:1.5rem;
+  filter:drop-shadow(0 0 24px rgba(168,85,247,.55));
 }
-.maint-dot{
-  width:8px;height:8px;border-radius:50%;background:#f87171;
-  box-shadow:0 0 0 0 rgba(248,113,113,.5);
-  animation:maint-pulse 1.8s ease infinite;
-}
-@keyframes maint-pulse{
-  0%{box-shadow:0 0 0 0 rgba(248,113,113,.6)}
-  70%{box-shadow:0 0 0 10px rgba(248,113,113,0)}
-  100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}
-}
-.maint-logo{
-  font-family:'Space Mono',monospace;
-  font-size:clamp(3rem,12vw,6.5rem);font-weight:700;
-  letter-spacing:.08em;line-height:1;
-  background:linear-gradient(135deg,#fff 0%,#e9d5ff 40%,#c084fc 65%,#e879f9 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 50px rgba(168,85,247,.45));
-  margin-bottom:2.5rem;
-}
-.maint-gears{position:relative;width:90px;height:90px;margin-bottom:2.5rem}
 .maint-gear-big{
-  position:absolute;top:0;left:0;font-size:3.4rem;line-height:1;
-  animation:spin-cw 4s linear infinite;
-  filter:drop-shadow(0 0 14px rgba(168,85,247,.7));
-}
-.maint-gear-sm{
-  position:absolute;bottom:-2px;right:-16px;font-size:1.9rem;line-height:1;
-  animation:spin-ccw 2.8s linear infinite;
-  filter:drop-shadow(0 0 8px rgba(232,121,249,.6));
+  font-size:4rem;line-height:1;
+  animation:spin-cw 5s linear infinite;display:block;
 }
 @keyframes spin-cw{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes spin-ccw{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-.maint-card{
-  background:rgba(255,255,255,.03);
-  border:1.5px solid rgba(168,85,247,.2);border-radius:24px;
-  padding:clamp(1.4rem,4vw,2.2rem) clamp(2rem,6vw,4rem);
-  margin-bottom:2.5rem;position:relative;overflow:hidden;
-  box-shadow:0 0 60px rgba(168,85,247,.08),inset 0 1px 0 rgba(255,255,255,.05);
-}
-.maint-card::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(135deg,rgba(168,85,247,.07) 0%,transparent 60%);
-}
-.maint-label{
-  font-family:'Space Mono',monospace;font-size:clamp(.65rem,1.8vw,.75rem);
-  letter-spacing:.22em;color:var(--muted);margin-bottom:.6rem;
-}
-.maint-big{
-  font-size:clamp(2.2rem,8vw,4.5rem);font-weight:900;
-  letter-spacing:.06em;line-height:1;
-  background:linear-gradient(135deg,#fff,#c084fc);
+
+/* TAZZ logo */
+.maint-logo{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1rem,3vw,1.2rem);font-weight:700;
+  letter-spacing:.12em;line-height:1;
+  background:linear-gradient(135deg,#fff 0%,#e9d5ff 40%,#c084fc 65%,#e879f9 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 30px rgba(168,85,247,.3));
+  filter:drop-shadow(0 0 16px rgba(168,85,247,.45));
+  margin-bottom:1.2rem;
 }
-.maint-progress-wrap{width:clamp(200px,60vw,360px);margin-bottom:2.5rem}
+
+/* MAINTENANCE big text */
+.maint-big{
+  font-size:clamp(2.8rem,12vw,6.5rem);font-weight:900;
+  letter-spacing:.06em;line-height:1;margin-bottom:.5rem;
+  background:linear-gradient(90deg,#e879f9 0%,#c084fc 40%,#e879f9 100%);
+  background-size:200% 100%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 40px rgba(232,121,249,.4));
+  animation:maint-shimmer 3s linear infinite;
+}
+@keyframes maint-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Underline accent */
+.maint-divider{
+  width:clamp(120px,40vw,280px);height:2px;
+  background:linear-gradient(90deg,transparent,rgba(232,121,249,.6),transparent);
+  margin:0 auto 2rem;
+}
+
+/* WE'LL BE RIGHT BACK */
+.maint-headline{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(.75rem,2.5vw,.92rem);letter-spacing:.22em;font-weight:700;
+  color:var(--white);margin-bottom:.8rem;
+  display:flex;align-items:center;gap:.5rem;justify-content:center;
+}
+.maint-exclaim{color:#e879f9;font-size:1.1em}
+
+/* Sub text */
+.maint-sub{
+  font-size:clamp(.8rem,2vw,.9rem);color:#c4b5d4;font-weight:600;
+  line-height:1.7;margin-bottom:.3rem;
+}
+.maint-sub2{
+  font-size:clamp(.8rem,2vw,.9rem);color:#c4b5d4;font-weight:600;
+  line-height:1.7;margin-bottom:2rem;
+}
+
+/* Progress */
+.maint-progress-wrap{width:clamp(240px,70vw,420px);margin-bottom:2rem}
 .maint-progress-label{
-  font-family:'Space Mono',monospace;font-size:.62rem;color:var(--muted);
-  letter-spacing:.12em;display:flex;justify-content:space-between;margin-bottom:.5rem;
+  font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;
+  letter-spacing:.12em;display:flex;justify-content:space-between;margin-bottom:.6rem;
 }
-.maint-bar{width:100%;height:3px;background:rgba(168,85,247,.12);border-radius:2px;overflow:hidden}
+.maint-progress-label span:first-child{color:var(--purple-light)}
+#maint-pct{color:var(--white)}
+.maint-bar{
+  width:100%;height:6px;
+  background:rgba(168,85,247,.15);border-radius:3px;overflow:hidden;
+  position:relative;
+  border:1px solid rgba(168,85,247,.2);
+}
 .maint-bar-fill{
   height:100%;width:0%;
-  background:linear-gradient(90deg,var(--purple),var(--pink));
-  border-radius:2px;box-shadow:0 0 10px rgba(168,85,247,.5);
-  animation:bar-load 3.5s cubic-bezier(.4,0,.2,1) forwards;
+  background:linear-gradient(90deg,#a855f7,#e879f9);
+  border-radius:3px;
+  box-shadow:0 0 14px rgba(232,121,249,.7),0 0 4px rgba(232,121,249,.9);
+  transition:width .5s ease;
+  position:relative;z-index:1;
 }
-@keyframes bar-load{0%{width:0%}40%{width:35%}70%{width:62%}85%{width:78%}100%{width:85%}}
-.maint-soon{
-  font-family:'Space Mono',monospace;
-  font-size:clamp(.72rem,2vw,.82rem);letter-spacing:.18em;color:var(--purple-light);
-  animation:maint-breathe 2.8s ease infinite;
+/* Dotted progress overlay */
+.maint-bar-dots{
+  position:absolute;inset:0;z-index:2;
+  background:repeating-linear-gradient(90deg,transparent,transparent 8px,rgba(6,3,14,.4) 8px,rgba(6,3,14,.4) 10px);
 }
-@keyframes maint-breathe{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* Buttons */
+.maint-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.maint-btn-discord{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.75em 1.8em;border-radius:8px;
+  background:linear-gradient(135deg,#e879f9,#a855f7);
+  color:#fff;font-family:'Space Mono',monospace;font-weight:700;
+  font-size:.75rem;letter-spacing:.1em;text-decoration:none;border:none;cursor:pointer;
+  box-shadow:0 0 24px rgba(232,121,249,.4);
+  transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;
+}
+.maint-btn-discord:hover{transform:translateY(-3px);box-shadow:0 0 36px rgba(232,121,249,.6)}
+.maint-btn-discord:active{transform:scale(.95)}
+.maint-btn-tiktok{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.75em 1.8em;border-radius:8px;
+  background:transparent;
+  color:#fff;font-family:'Space Mono',monospace;font-weight:700;
+  font-size:.75rem;letter-spacing:.1em;text-decoration:none;
+  border:1.5px solid rgba(255,255,255,.2);cursor:pointer;
+  transition:border-color .2s,transform .2s;-webkit-tap-highlight-color:transparent;
+}
+.maint-btn-tiktok:hover{border-color:rgba(255,255,255,.5);transform:translateY(-3px)}
+.maint-btn-tiktok:active{transform:scale(.95)}
 </style>
 </head>
 <body>
@@ -812,21 +846,27 @@ body.theme-green{
 <div id="maint-overlay">
   <canvas id="maint-canvas"></canvas>
   <div class="maint-inner">
-    <div class="maint-status"><span class="maint-dot"></span>WEBSITE OFFLINE</div>
+    <div class="maint-gear-wrap"><span class="maint-gear-big">&#9881;</span></div>
     <div class="maint-logo">TAZZ</div>
-    <div class="maint-gears">
-      <span class="maint-gear-big">&#9881;</span>
-      <span class="maint-gear-sm">&#9881;</span>
+    <div class="maint-big">MAINTENANCE</div>
+    <div class="maint-divider"></div>
+    <div class="maint-headline">
+      <span class="maint-exclaim">!</span>
+      WE'LL BE RIGHT BACK
+      <span class="maint-exclaim">!</span>
     </div>
-    <div class="maint-card">
-      <div class="maint-label">WEBSITE IS CURRENTLY IN</div>
-      <div class="maint-big">MAINTENANCE</div>
-    </div>
+    <p class="maint-sub">pls come back later</p>
+    <p class="maint-sub2">We're working hard to improve things for you.</p>
     <div class="maint-progress-wrap">
       <div class="maint-progress-label"><span>WORKING ON IT</span><span id="maint-pct">0%</span></div>
-      <div class="maint-bar"><div class="maint-bar-fill" id="maint-fill"></div></div>
+      <div class="maint-bar">
+        <div class="maint-bar-fill" id="maint-fill"></div>
+        <div class="maint-bar-dots"></div>
+      </div>
     </div>
-    <div class="maint-soon">&#8212;&nbsp; COME BACK SOON &nbsp;&#8212;</div>
+    <div class="maint-btns">
+      <a href="https://www.tiktok.com/@nsg_tazz" target="_blank" class="maint-btn-tiktok">TIKTOK</a>
+    </div>
   </div>
 </div>
 
@@ -963,7 +1003,7 @@ body.theme-green{
     <div class="o4-title">A script has crashed.</div>
     <p class="o4-desc">Something broke and this page went down hard. Try heading back — or reach out if it keeps happening.</p>
     <div class="o4-actions">
-      <a href="mailto:Tarianh8@outlook.com" class="o4-btn-ghost">Report Issue</a>
+      <a href="/cdn-cgi/l/email-protection#5c083d2e353d3234641c33292830333337723f3331" class="o4-btn-ghost">Report Issue</a>
     </div>
   </div>
 </div>
@@ -1281,7 +1321,7 @@ body.theme-green{
 <!-- FLOATING BUTTONS -->
 <button id="back-top" aria-label="Back to top">&#8679;</button>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* MAINTENANCE moved to top */
 if(SHOW_404){
   document.addEventListener('DOMContentLoaded', function(){
@@ -1332,6 +1372,7 @@ if(MAINTENANCE){
 
     // Animated progress counter
     const pct = document.getElementById('maint-pct');
+    const fill = document.getElementById('maint-fill');
     const targets = [35, 62, 78, 85];
     let ti = 0, cur = 0;
     const delays = [800, 600, 500, 800];
@@ -1339,8 +1380,12 @@ if(MAINTENANCE){
       if(ti >= targets.length) return;
       const target = targets[ti];
       const step = () => {
-        if(cur < target){ cur++; if(pct) pct.textContent = cur+'%'; requestAnimationFrame(step); }
-        else { ti++; setTimeout(tick, delays[ti] || 800); }
+        if(cur < target){
+          cur++;
+          if(pct) pct.textContent = cur+'%';
+          if(fill) fill.style.width = cur+'%';
+          requestAnimationFrame(step);
+        } else { ti++; setTimeout(tick, delays[ti] || 800); }
       };
       setTimeout(step, delays[ti]);
       ti++;
@@ -1983,4 +2028,3 @@ backTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth
 </script>
 </body>
 </html>
-
