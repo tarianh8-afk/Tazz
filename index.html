@@ -68,13 +68,131 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:1rem var(--sec-px);
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mobile-menu{display:none;position:fixed;inset:0;z-index:250;background:rgba(7,4,15,.97);
-  backdrop-filter:blur(24px);flex-direction:column;align-items:center;justify-content:center;
-  gap:2.5rem;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.mobile-menu{
+  display:none;position:fixed;inset:0;z-index:250;
+  background:rgba(7,4,15,.96);
+  backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+  flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+  overflow:hidden;
+}
+/* Background glow orbs */
+.mobile-menu::before{
+  content:'';position:absolute;top:-20%;left:-20%;
+  width:70%;height:70%;border-radius:50%;
+  background:radial-gradient(circle,rgba(168,85,247,.18) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+  animation:mob-orb1 6s ease infinite alternate;
+}
+.mobile-menu::after{
+  content:'';position:absolute;bottom:-20%;right:-20%;
+  width:60%;height:60%;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,121,249,.12) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+  animation:mob-orb2 7s ease infinite alternate;
+}
+@keyframes mob-orb1{from{transform:translate(0,0) scale(1)}to{transform:translate(10%,8%) scale(1.15)}}
+@keyframes mob-orb2{from{transform:translate(0,0) scale(1)}to{transform:translate(-8%,-6%) scale(1.1)}}
 .mobile-menu.open{opacity:1;pointer-events:all}
-.mobile-menu a{font-size:clamp(1.6rem,8vw,2.4rem);font-weight:800;color:var(--white);
-  text-decoration:none;letter-spacing:.04em;transition:color .2s}
-.mobile-menu a:active{color:var(--purple-light)}
+
+/* Top bar inside menu */
+.mobile-menu-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.2rem 1.5rem;
+  border-bottom:1px solid rgba(168,85,247,.15);
+  flex-shrink:0;position:relative;z-index:1;
+}
+.mobile-menu-logo{
+  font-family:'Space Mono',monospace;font-weight:700;font-size:1.1rem;
+  color:var(--white);text-decoration:none;letter-spacing:.06em;
+  filter:drop-shadow(0 0 10px rgba(168,85,247,.5));
+}
+.mobile-menu-logo span{color:var(--purple)}
+.mobile-menu-close{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);
+  color:var(--purple-light);font-size:1.2rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+  box-shadow:0 0 12px rgba(168,85,247,.15);
+  transition:background .2s,box-shadow .2s;
+}
+.mobile-menu-close:active{background:rgba(168,85,247,.25);box-shadow:0 0 20px rgba(168,85,247,.3)}
+
+/* Links list */
+.mobile-menu-links{
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:2rem 1.5rem;gap:.4rem;position:relative;z-index:1;
+}
+.mobile-link{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:1.35rem;font-weight:700;color:var(--white);
+  text-decoration:none;letter-spacing:.02em;
+  padding:1rem 1.2rem;border-radius:14px;
+  border:1.5px solid rgba(168,85,247,.25);
+  background:rgba(168,85,247,.05);
+  box-shadow:0 0 12px rgba(168,85,247,.07),inset 0 0 12px rgba(168,85,247,.03);
+  transition:all .2s ease;
+  -webkit-tap-highlight-color:transparent;
+  position:relative;overflow:hidden;
+}
+.mobile-link::before{
+  content:'';position:absolute;inset:0;border-radius:14px;
+  background:linear-gradient(135deg,rgba(168,85,247,.08),transparent);
+  opacity:0;transition:opacity .2s;
+}
+/* Glowing left border accent */
+.mobile-link::after{
+  content:'';position:absolute;left:0;top:20%;bottom:20%;
+  width:3px;border-radius:2px;
+  background:linear-gradient(180deg,var(--purple),var(--pink));
+  opacity:0;transition:opacity .2s;
+  box-shadow:0 0 8px var(--purple);
+}
+.mobile-link:active{
+  color:var(--white);
+  border-color:rgba(168,85,247,.3);
+  background:rgba(168,85,247,.06);
+  box-shadow:0 0 20px rgba(168,85,247,.1),inset 0 0 20px rgba(168,85,247,.04);
+}
+.mobile-link:active::before{opacity:1}
+.mobile-link:active::after{opacity:1}
+.mobile-link-num{
+  font-family:'Space Mono',monospace;
+  font-size:.6rem;color:var(--purple);
+  letter-spacing:.1em;font-weight:400;
+  text-shadow:0 0 8px rgba(168,85,247,.6);
+}
+
+/* Bottom social strip */
+.mobile-menu-footer{
+  padding:1.2rem 1.5rem;
+  border-top:1px solid rgba(168,85,247,.15);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;position:relative;z-index:1;
+}
+.mobile-footer-socials{display:flex;gap:.7rem}
+.mobile-footer-social{
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+  transition:border-color .2s,background .2s,box-shadow .2s;
+  box-shadow:0 0 8px rgba(168,85,247,.08);
+}
+.mobile-footer-social:active{
+  border-color:var(--purple);
+  background:rgba(168,85,247,.18);
+  box-shadow:0 0 16px rgba(168,85,247,.3);
+}
+.mobile-menu-tag{
+  font-family:'Space Mono',monospace;font-size:.6rem;
+  color:var(--purple-light);letter-spacing:.12em;
+  text-shadow:0 0 10px rgba(168,85,247,.5);
+}
+
 @media(max-width:767px){.nav-links{display:none}.hamburger{display:flex}.mobile-menu{display:flex}}
 
 /* HERO */
@@ -583,12 +701,27 @@ footer{border-top:1px solid var(--border);padding:1.8rem var(--sec-px);
 
 <!-- MOBILE DRAWER -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#about" class="mobile-link">About</a>
-  <a href="#schedule" class="mobile-link">Schedule</a>
-  <a href="#socials" class="mobile-link">Socials</a>
-  <a href="#esports" class="mobile-link">Esports</a>
-  <a href="#projects" class="mobile-link">Projects</a>
-  <a href="#contact" class="mobile-link">Contact</a>
+  <div class="mobile-menu-header">
+    <a href="#" class="mobile-menu-logo">T<span>.</span>AZZ</a>
+    <div class="mobile-menu-close" id="menuClose">&#10005;</div>
+  </div>
+  <div class="mobile-menu-links">
+    <a href="#about"    class="mobile-link"><span>About</span>    <span class="mobile-link-num">01</span></a>
+    <a href="#schedule" class="mobile-link"><span>Schedule</span> <span class="mobile-link-num">02</span></a>
+    <a href="#socials"  class="mobile-link"><span>Socials</span>  <span class="mobile-link-num">03</span></a>
+    <a href="#esports"  class="mobile-link"><span>Esports</span>  <span class="mobile-link-num">04</span></a>
+    <a href="#projects" class="mobile-link"><span>Projects</span> <span class="mobile-link-num">05</span></a>
+    <a href="#contact"  class="mobile-link"><span>Contact</span>  <span class="mobile-link-num">06</span></a>
+  </div>
+  <div class="mobile-menu-footer">
+    <div class="mobile-footer-socials">
+      <a href="https://www.tiktok.com/@nsg_tazz" target="_blank" class="mobile-footer-social">&#127925;</a>
+      <a href="https://www.youtube.com/@TAZFNFV" target="_blank" class="mobile-footer-social">&#9654;&#65039;</a>
+      <a href="https://discord.com/users/devtazz" target="_blank" class="mobile-footer-social">&#128172;</a>
+      <a href="mailto:Tarianh8@outlook.com" class="mobile-footer-social">&#128231;</a>
+    </div>
+    <div class="mobile-menu-tag">NSG TAZZ 🪐</div>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -1212,17 +1345,25 @@ if(cur&&window.matchMedia('(hover:hover) and (pointer:fine)').matches){
 /* ===== HAMBURGER ===== */
 const hamburger=document.getElementById('hamburger');
 const mobileMenu=document.getElementById('mobileMenu');
+const menuClose=document.getElementById('menuClose');
+
+function openMenu(){
+  hamburger.classList.add('open');
+  mobileMenu.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeMenu(){
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow='';
+}
+
 hamburger.addEventListener('click',()=>{
-  const open=hamburger.classList.toggle('open');
-  mobileMenu.classList.toggle('open',open);
-  document.body.style.overflow=open?'hidden':'';
+  hamburger.classList.contains('open') ? closeMenu() : openMenu();
 });
+if(menuClose) menuClose.addEventListener('click', closeMenu);
 document.querySelectorAll('.mobile-link').forEach(link=>{
-  link.addEventListener('click',()=>{
-    hamburger.classList.remove('open');
-    mobileMenu.classList.remove('open');
-    document.body.style.overflow='';
-  });
+  link.addEventListener('click', closeMenu);
 });
 
 /* ===== PROJECT SLIDER ===== */
@@ -1390,3 +1531,5 @@ document.getElementById('sendBtn').addEventListener('click',async function(){
 </script>
 </body>
 </html>
+
+
